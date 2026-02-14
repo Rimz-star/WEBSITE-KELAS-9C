@@ -37,9 +37,14 @@ footer{background:#007bff;color:white;text-align:center;padding:15px;margin-top:
 .sholat{background:#90ee90;color:black}
 .mbg{background:#ff6961;color:black}
 .istirahat{background:#ffd700;color:black}
-/* Warna tambahan untuk jadwal baru Senin */
-.upacara{background:#ff8c00;color:white}  /* Upacara oranye tua */
-.ppkn{background:#87cefa;color:black}    /* PPKN biru muda */
+/* Warna tambahan untuk jadwal baru */
+.upacara{background:#ff8c00;color:white}      /* Upacara oranye tua */
+.ppkn{background:#87cefa;color:black}        /* PPKN biru muda */
+.ips{background:#ffa07a;color:black}         /* IPS salmon */
+.pa{background:#dda0dd;color:black}          /* Pendidikan Agama ungu muda */
+.binggris{background:#7fffd4;color:black}    /* Bahasa Inggris aqua */
+.bindo{background:#f08080;color:black}       /* Bahasa Indonesia */
+.senam{background:#ff6347;color:white}       /* Senam merah tomat */
 </style>
 </head>
 <body>
@@ -94,7 +99,7 @@ footer{background:#007bff;color:white;text-align:center;padding:15px;margin-top:
             <th>11:00</th><th>11:30</th><th>12:00</th><th>12:30</th><th>13:00</th><th>13:30</th>
         </tr>
 
-        <!-- Senin (diubah dan kontras) -->
+        <!-- Senin -->
         <tr>
             <td>Senin</td>
             <td colspan="2" class="upacara">Upacara</td>
@@ -110,41 +115,46 @@ footer{background:#007bff;color:white;text-align:center;padding:15px;margin-top:
         <tr>
             <td>Selasa</td>
             <td colspan="3" class="mat2">Seni Tari</td>
-            <td colspan="1"></td>
-            <td class="istirahat">Istirahat</td>
-            <td colspan="4" class="mat3">Matematika</td>
-            <td colspan="1" class="istirahat">Makan</td>
-            <td colspan="4" class="mat5">IPA</td>
+            <td colspan="1" class="ips">IPS</td>
+            <td colspan="1" class="istirahat">Istirahat</td>
+            <td colspan="1" class="ips">IPS</td>
+            <td colspan="3" class="pa">Pendidikan Agama Islam</td>
+            <td colspan="2" class="istirahat">Ishoma</td>
+            <td colspan="3" class="binggris">Bahasa Inggris</td>
         </tr>
+
         <!-- Rabu -->
         <tr>
             <td>Rabu</td>
-            <td colspan="4" class="mat3">Matematika</td>
-            <td class="istirahat">Istirahat</td>
-            <td colspan="4" class="mat4">Bahasa Jawa</td>
-            <td colspan="1" class="istirahat">Makan</td>
-            <td colspan="4" class="mat2">Seni Tari</td>
+            <td colspan="3" class="tka">TKA</td>
+            <td colspan="1" class="mat3">Matematika</td>
+            <td colspan="1" class="istirahat">Istirahat</td>
+            <td colspan="1" class="mat3">Matematika</td>
+            <td colspan="3" class="bindo">Bahasa Indonesia</td>
+            <td colspan="2" class="istirahat">Ishoma</td>
+            <td colspan="3" class="bindo">Bahasa Indonesia</td>
         </tr>
+
         <!-- Kamis -->
         <tr>
             <td>Kamis</td>
-            <td colspan="2" class="mat4">Bahasa Jawa</td>
-            <td colspan="3" class="mat5">IPA</td>
-            <td class="istirahat">Istirahat</td>
+            <td colspan="3" class="mat4">Bahasa Jawa</td>
+            <td colspan="1" class="mat5">IPA</td>
+            <td colspan="1" class="istirahat">Istirahat</td>
+            <td colspan="1" class="ips">IPS</td>
+            <td colspan="3" class="bindo">Bahasa Indonesia</td>
+            <td colspan="2" class="istirahat">Ishoma</td>
             <td colspan="3" class="mat3">Matematika</td>
-            <td colspan="1" class="istirahat">Makan</td>
-            <td colspan="4" class="mat2">Seni Tari</td>
         </tr>
-        <!-- Jumat -->
+
+        <!-- Jumat (baru) -->
         <tr>
             <td>Jumat</td>
+            <td colspan="2" class="senam">Senam Bersama</td>
             <td colspan="2" class="mat6">Informatika</td>
-            <td colspan="2" class="mat7">Olahraga Jumat</td>
-            <td class="istirahat">Istirahat</td>
-            <td colspan="3" class="tka">Kegiatan TKA</td>
-            <td colspan="2" class="sholat">Sholat Jumat</td>
-            <td colspan="2" class="mbg">Pengambilan MBG</td>
-            <td colspan="1"></td>
+            <td colspan="2" class="binggris">Bahasa Inggris</td>
+            <td colspan="3" class="tka">TKA</td>
+            <td colspan="6" class="istirahat">Ishoma</td>
         </tr>
     </table>
 </section>
@@ -173,7 +183,7 @@ footer{background:#007bff;color:white;text-align:center;padding:15px;margin-top:
 </section>
 
 <footer>
-    &copy; 2026 Sekolah Dasar ABC - Kelas 1A
+    &copy; 2026 Sekolah Menengah Pertama - Kelas 9C
 </footer>
 
 <script>
