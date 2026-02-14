@@ -3,117 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Website Kelas 9C</title>
-
+<title>Website Kelas 1A</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
+body{background:#f4f4f4;transition:.4s}
+body.dark{background:#121212;color:white}
+header{background:#007bff;color:white;padding:20px;text-align:center}
+nav{background:#0056b3;padding:10px;text-align:center}
+nav a{color:white;margin:0 15px;text-decoration:none}
+section{padding:25px;margin:20px;background:white;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.1);animation:fade .6s ease}
+body.dark section{background:#1e1e1e}
+@keyframes fade{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{border:1px solid #ddd;padding:8px;text-align:center;font-size:12px}
+th{background:#007bff;color:white}
+.gallery{display:flex;flex-wrap:wrap;gap:10px}
+.gallery img{width:150px;height:150px;object-fit:cover;border-radius:8px;transition:.3s}
+.gallery img:hover{transform:scale(1.05)}
+.student{text-align:center;margin:10px}
+button{padding:8px 15px;border:none;border-radius:6px;background:#007bff;color:white;cursor:pointer;margin-top:10px}
+footer{background:#007bff;color:white;text-align:center;padding:15px;margin-top:20px}
 
-body{
-    background:#f4f4f4;
-    transition:.4s;
-}
-
-body.dark{
-    background:#121212;
-    color:white;
-}
-
-header{
-    background:#007bff;
-    color:white;
-    padding:20px;
-    text-align:center;
-}
-
-nav{
-    background:#0056b3;
-    padding:10px;
-    text-align:center;
-}
-
-nav a{
-    color:white;
-    margin:0 15px;
-    text-decoration:none;
-}
-
-section{
-    padding:25px;
-    margin:20px;
-    background:white;
-    border-radius:12px;
-    box-shadow:0 10px 30px rgba(0,0,0,.1);
-    animation:fade .6s ease;
-}
-
-body.dark section{
-    background:#1e1e1e;
-}
-
-@keyframes fade{
-    from{opacity:0;transform:translateY(20px)}
-    to{opacity:1;transform:translateY(0)}
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:10px;
-}
-
-th,td{
-    border:1px solid #ddd;
-    padding:8px;
-    text-align:center;
-}
-
-th{
-    background:#007bff;
-    color:white;
-}
-
-.gallery{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-}
-
-.gallery img{
-    width:150px;
-    height:150px;
-    object-fit:cover;
-    border-radius:8px;
-    transition:.3s;
-}
-
-.gallery img:hover{
-    transform:scale(1.05);
-}
-
-.student{
-    text-align:center;
-    margin:10px;
-}
-
-button{
-    padding:8px 15px;
-    border:none;
-    border-radius:6px;
-    background:#007bff;
-    color:white;
-    cursor:pointer;
-    margin-top:10px;
-}
-
-footer{
-    background:#007bff;
-    color:white;
-    text-align:center;
-    padding:15px;
-    margin-top:20px;
-}
+/* Warna kode mata pelajaran */
+.mat1{background:#ff9999}  /* Olahraga */
+.mat2{background:#99ccff}  /* Seni Tari */
+.mat3{background:#99ff99}  /* Matematika */
+.mat4{background:#ffcc99}  /* Bahasa Jawa */
+.mat5{background:#ffb3ff}  /* IPA */
+.mat6{background:#ffff99}  /* Informatika */
+.mat7{background:#66ffff}  /* Olahraga Jumat */
+.tka{background:#ffb347;color:black}
+.sholat{background:#90ee90;color:black}
+.mbg{background:#ff6961;color:black}
+.istirahat{background:#ffd700;color:black}
 </style>
 </head>
 <body>
@@ -135,14 +58,12 @@ footer{
 <section id="beranda">
     <h2>Beranda</h2>
     <p>Selamat datang di Kelas 1A! Kami memiliki 33 siswa yang aktif dan kreatif.</p>
-
     <h3>Berita Singkat</h3>
     <ul>
         <li>Ujian matematika minggu depan.</li>
         <li>Kegiatan olahraga hari Jumat.</li>
         <li>Libur akhir bulan.</li>
     </ul>
-
     <h3>Foto Kelas</h3>
     <div class="gallery">
         <img src="https://via.placeholder.com/150?text=Foto+Kelas+1">
@@ -161,22 +82,71 @@ footer{
 </section>
 
 <section id="jadwal">
-    <h2>Jadwal Pelajaran</h2>
+    <h2>Jadwal Pelajaran 07:00 - 13:40</h2>
     <table>
-        <tr><th>Hari</th><th>Jam 1</th><th>Jam 2</th><th>Jam 3</th><th>Jam 4</th></tr>
-        <tr><td>Senin</td><td>Matematika</td><td>Bahasa Indonesia</td><td>IPA</td><td>Olahraga</td></tr>
-        <tr><td>Selasa</td><td>Bahasa Inggris</td><td>Seni</td><td>IPS</td><td>Musik</td></tr>
-        <tr><td>Rabu</td><td>Matematika</td><td>Bahasa Indonesia</td><td>IPA</td><td>Olahraga</td></tr>
-        <tr><td>Kamis</td><td>Bahasa Inggris</td><td>Seni</td><td>IPS</td><td>Musik</td></tr>
-        <tr><td>Jumat</td><td>Matematika</td><td>Bahasa Indonesia</td><td>IPA</td><td>Kegiatan Khusus</td></tr>
+        <tr>
+            <th>Hari</th>
+            <th>07:00</th><th>07:30</th><th>08:00</th><th>08:30</th>
+            <th>09:00</th><th>09:30</th><th>10:00</th><th>10:30</th>
+            <th>11:00</th><th>11:30</th><th>12:00</th><th>12:30</th><th>13:00</th><th>13:30</th>
+        </tr>
+
+        <!-- Senin -->
+        <tr>
+            <td>Senin</td>
+            <td colspan="4" class="mat1">Olahraga</td>
+            <td colspan="1" class="istirahat">Istirahat</td>
+            <td colspan="5" class="mat3">Matematika</td>
+            <td colspan="1" class="istirahat">Makan</td>
+            <td colspan="2" class="mat4">Bahasa Jawa</td>
+            <td colspan="1"></td>
+        </tr>
+        <!-- Selasa -->
+        <tr>
+            <td>Selasa</td>
+            <td colspan="3" class="mat2">Seni Tari</td>
+            <td colspan="1"></td>
+            <td class="istirahat">Istirahat</td>
+            <td colspan="4" class="mat3">Matematika</td>
+            <td colspan="1" class="istirahat">Makan</td>
+            <td colspan="4" class="mat5">IPA</td>
+        </tr>
+        <!-- Rabu -->
+        <tr>
+            <td>Rabu</td>
+            <td colspan="4" class="mat3">Matematika</td>
+            <td class="istirahat">Istirahat</td>
+            <td colspan="4" class="mat4">Bahasa Jawa</td>
+            <td colspan="1" class="istirahat">Makan</td>
+            <td colspan="4" class="mat2">Seni Tari</td>
+        </tr>
+        <!-- Kamis -->
+        <tr>
+            <td>Kamis</td>
+            <td colspan="2" class="mat4">Bahasa Jawa</td>
+            <td colspan="3" class="mat5">IPA</td>
+            <td class="istirahat">Istirahat</td>
+            <td colspan="3" class="mat3">Matematika</td>
+            <td colspan="1" class="istirahat">Makan</td>
+            <td colspan="4" class="mat2">Seni Tari</td>
+        </tr>
+        <!-- Jumat -->
+        <tr>
+            <td>Jumat</td>
+            <td colspan="2" class="mat6">Informatika</td>
+            <td colspan="2" class="mat7">Olahraga Jumat</td>
+            <td class="istirahat">Istirahat</td>
+            <td colspan="3" class="tka">Kegiatan TKA</td>
+            <td colspan="2" class="sholat">Sholat Jumat</td>
+            <td colspan="2" class="mbg">Pengambilan MBG</td>
+            <td colspan="1"></td>
+        </tr>
     </table>
 </section>
 
 <section id="kehadiran">
     <h2>Kehadiran</h2>
-
     <canvas id="chart"></canvas>
-
     <h3>Input Kehadiran Hari Ini</h3>
     <div id="absenList"></div>
     <button onclick="simpanAbsen()">Simpan Kehadiran</button>
@@ -184,7 +154,7 @@ footer{
 
 <section id="kontak">
     <h2>Kontak</h2>
-    <p>Wali Kelas: Bu Puji Purwanti s.pd</p>
+    <p>Wali Kelas: Bu Puji Purwanti S.Pd</p>
     <p>Email: smpn!kebasen@gmail.com</p>
     <p>Telepon: 08123456789</p>
     <p>Alamat: Jl. Pendidikan No. 1, Kota ABC</p>
@@ -195,22 +165,21 @@ footer{
 </footer>
 
 <script>
+// Generate siswa
 const totalSiswa = 33;
-const today = new Date().toLocaleDateString();
-
-// Generate 33 siswa
 const tabel = document.getElementById("tabelSiswa");
-for(let i=1;i<=33;i++){
+for(let i=1;i<=totalSiswa;i++){
     tabel.innerHTML += `<tr><td>${i}</td><td>Siswa ${i}</td></tr>`;
 }
 
 // Generate checkbox absen
 const absenList = document.getElementById("absenList");
-for(let i=1;i<=33;i++){
+for(let i=1;i<=totalSiswa;i++){
     absenList.innerHTML += `<label><input type="checkbox" value="${i}" class="absen"> Siswa ${i}</label><br>`;
 }
 
-// Ambil riwayat
+// Ambil riwayat absen
+const today = new Date().toLocaleDateString();
 let riwayat = JSON.parse(localStorage.getItem("riwayatAbsen")) || {};
 
 // Simpan absen
@@ -222,7 +191,7 @@ function simpanAbsen(){
     updateChart();
 }
 
-// Grafik garis
+// Chart garis
 const ctx = document.getElementById("chart").getContext("2d");
 let chart = new Chart(ctx,{
     type:"line",
@@ -257,6 +226,5 @@ function toggleDark(){
 
 updateChart();
 </script>
-
 </body>
 </html>
