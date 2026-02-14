@@ -3,268 +3,251 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kelas 9C Realtime</title>
+<title>Website Kelas 1A</title>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
 
 body{
-    display:flex;
-    background:linear-gradient(135deg,#007bff,#00c6ff);
-    transition:0.4s;
+    background:#f4f4f4;
+    transition:.4s;
 }
 
 body.dark{
-    background:linear-gradient(135deg,#121212,#1f1f1f);
+    background:#121212;
     color:white;
 }
 
-.sidebar{
-    width:230px;
-    height:100vh;
-    background:rgba(255,255,255,0.2);
-    backdrop-filter:blur(15px);
+header{
+    background:#007bff;
+    color:white;
     padding:20px;
-    color:white;
+    text-align:center;
 }
 
-.sidebar h2{margin-bottom:20px;}
-.sidebar button{
-    width:100%;
+nav{
+    background:#0056b3;
     padding:10px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
-    background:rgba(255,255,255,0.3);
+    text-align:center;
+}
+
+nav a{
     color:white;
-    cursor:pointer;
+    margin:0 15px;
+    text-decoration:none;
 }
 
-.main{flex:1;padding:30px;}
-
-.card{
-    background:white;
+section{
     padding:25px;
-    border-radius:20px;
-    margin-bottom:25px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.2);
-    animation:fade 0.7s ease;
+    margin:20px;
+    background:white;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+    animation:fade .6s ease;
 }
 
-body.dark .card{background:#2b2b2b;}
+body.dark section{
+    background:#1e1e1e;
+}
 
 @keyframes fade{
-    from{opacity:0;transform:translateY(30px);}
-    to{opacity:1;transform:translateY(0);}
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
 }
 
-/* Calendar */
-.calendar-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:15px;
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
 }
 
-.calendar{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:8px;
-}
-
-.day-name{
-    font-weight:bold;
+th,td{
+    border:1px solid #ddd;
+    padding:8px;
     text-align:center;
 }
 
-.calendar div{
-    padding:12px;
-    text-align:center;
-    border-radius:10px;
-    cursor:pointer;
-    background:#f1f1f1;
-    transition:0.3s;
-}
-
-.calendar div:hover{
+th{
     background:#007bff;
     color:white;
 }
 
-.today{
-    background:#28a745 !important;
-    color:white;
+.gallery{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
 }
 
-.selected{
-    background:#007bff !important;
-    color:white;
+.gallery img{
+    width:150px;
+    height:150px;
+    object-fit:cover;
+    border-radius:8px;
+    transition:.3s;
 }
 
-body.dark .calendar div{background:#3a3a3a;}
+.gallery img:hover{
+    transform:scale(1.05);
+}
 
-.absen-box{
-    max-height:200px;
-    overflow-y:auto;
-    margin-top:10px;
+.student{
+    text-align:center;
+    margin:10px;
 }
 
 button{
     padding:8px 15px;
     border:none;
-    border-radius:8px;
+    border-radius:6px;
     background:#007bff;
     color:white;
     cursor:pointer;
     margin-top:10px;
 }
+
+footer{
+    background:#007bff;
+    color:white;
+    text-align:center;
+    padding:15px;
+    margin-top:20px;
+}
 </style>
 </head>
-
 <body>
 
-<div class="sidebar">
-    <h2>Kelas 9C</h2>
-    <div id="clock" style="margin-bottom:15px;"></div>
+<header>
+    <h1>Website Kelas 1A</h1>
+    <p>Sekolah Dasar ABC</p>
     <button onclick="toggleDark()">🌙 Dark Mode</button>
-</div>
+</header>
 
-<div class="main">
+<nav>
+    <a href="#beranda">Beranda</a>
+    <a href="#siswa">Siswa</a>
+    <a href="#jadwal">Jadwal</a>
+    <a href="#kehadiran">Kehadiran</a>
+    <a href="#kontak">Kontak</a>
+</nav>
 
-<div class="card">
-    <div class="calendar-header">
-        <button onclick="prevMonth()">◀</button>
-        <h3 id="monthYear"></h3>
-        <button onclick="nextMonth()">▶</button>
+<section id="beranda">
+    <h2>Beranda</h2>
+    <p>Selamat datang di Kelas 1A! Kami memiliki 33 siswa yang aktif dan kreatif.</p>
+
+    <h3>Berita Singkat</h3>
+    <ul>
+        <li>Ujian matematika minggu depan.</li>
+        <li>Kegiatan olahraga hari Jumat.</li>
+        <li>Libur akhir bulan.</li>
+    </ul>
+
+    <h3>Foto Kelas</h3>
+    <div class="gallery">
+        <img src="https://via.placeholder.com/150?text=Foto+Kelas+1">
+        <img src="https://via.placeholder.com/150?text=Foto+Kelas+2">
+        <img src="https://via.placeholder.com/150?text=Foto+Kelas+3">
+        <img src="https://via.placeholder.com/150?text=Foto+Kelas+4">
     </div>
-    <div class="calendar" id="calendar"></div>
-</div>
+</section>
 
-<div class="card">
-    <h3>📊 Grafik Kehadiran</h3>
+<section id="siswa">
+    <h2>Daftar Siswa</h2>
+    <table>
+        <tr><th>No</th><th>Nama</th></tr>
+        <tbody id="tabelSiswa"></tbody>
+    </table>
+</section>
+
+<section id="jadwal">
+    <h2>Jadwal Pelajaran</h2>
+    <table>
+        <tr><th>Hari</th><th>Jam 1</th><th>Jam 2</th><th>Jam 3</th><th>Jam 4</th></tr>
+        <tr><td>Senin</td><td>Matematika</td><td>Bahasa Indonesia</td><td>IPA</td><td>Olahraga</td></tr>
+        <tr><td>Selasa</td><td>Bahasa Inggris</td><td>Seni</td><td>IPS</td><td>Musik</td></tr>
+        <tr><td>Rabu</td><td>Matematika</td><td>Bahasa Indonesia</td><td>IPA</td><td>Olahraga</td></tr>
+        <tr><td>Kamis</td><td>Bahasa Inggris</td><td>Seni</td><td>IPS</td><td>Musik</td></tr>
+        <tr><td>Jumat</td><td>Matematika</td><td>Bahasa Indonesia</td><td>IPA</td><td>Kegiatan Khusus</td></tr>
+    </table>
+</section>
+
+<section id="kehadiran">
+    <h2>Kehadiran</h2>
+
     <canvas id="chart"></canvas>
-</div>
 
-<div class="card">
-    <h3>📝 Input Kehadiran</h3>
-    <div class="absen-box" id="formAbsen"></div>
+    <h3>Input Kehadiran Hari Ini</h3>
+    <div id="absenList"></div>
     <button onclick="simpanAbsen()">Simpan Kehadiran</button>
-</div>
+</section>
 
-</div>
+<section id="kontak">
+    <h2>Kontak</h2>
+    <p>Wali Kelas: Bu Guru A</p>
+    <p>Email: guru@sekolahabc.com</p>
+    <p>Telepon: 08123456789</p>
+    <p>Alamat: Jl. Pendidikan No. 1, Kota ABC</p>
+</section>
+
+<footer>
+    &copy; 2026 Sekolah Dasar ABC - Kelas 1A
+</footer>
 
 <script>
 const totalSiswa = 33;
-let currentDate = new Date();
-let selectedDate = new Date();
+const today = new Date().toLocaleDateString();
 
-const monthYear = document.getElementById("monthYear");
-const calendar = document.getElementById("calendar");
-
-const dayNames = ["Sen","Sel","Rab","Kam","Jum","Sab","Min"];
-const monthNames = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-
-function renderCalendar(){
-    calendar.innerHTML="";
-
-    dayNames.forEach(d=>{
-        calendar.innerHTML+=`<div class="day-name">${d}</div>`;
-    });
-
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-
-    monthYear.innerText = monthNames[month] + " " + year;
-
-    const firstDay = new Date(year,month,1).getDay();
-    const daysInMonth = new Date(year,month+1,0).getDate();
-
-    let start = (firstDay===0?6:firstDay-1);
-
-    for(let i=0;i<start;i++){
-        calendar.innerHTML += `<div></div>`;
-    }
-
-    for(let day=1;day<=daysInMonth;day++){
-        let date = new Date(year,month,day);
-        let className="";
-
-        if(date.toDateString()===new Date().toDateString()){
-            className="today";
-        }
-
-        if(date.toDateString()===selectedDate.toDateString()){
-            className="selected";
-        }
-
-        calendar.innerHTML += 
-        `<div class="${className}" onclick="selectDate(${day})">${day}</div>`;
-    }
+// Generate 33 siswa
+const tabel = document.getElementById("tabelSiswa");
+for(let i=1;i<=33;i++){
+    tabel.innerHTML += `<tr><td>${i}</td><td>Siswa ${i}</td></tr>`;
 }
 
-function selectDate(day){
-    selectedDate = new Date(currentDate.getFullYear(),currentDate.getMonth(),day);
-    renderCalendar();
-    loadAbsen();
-    updateChart();
+// Generate checkbox absen
+const absenList = document.getElementById("absenList");
+for(let i=1;i<=33;i++){
+    absenList.innerHTML += `<label><input type="checkbox" value="${i}" class="absen"> Siswa ${i}</label><br>`;
 }
 
-function prevMonth(){
-    currentDate.setMonth(currentDate.getMonth()-1);
-    renderCalendar();
-}
+// Ambil riwayat
+let riwayat = JSON.parse(localStorage.getItem("riwayatAbsen")) || {};
 
-function nextMonth(){
-    currentDate.setMonth(currentDate.getMonth()+1);
-    renderCalendar();
-}
-
-// Realtime Clock
-setInterval(()=>{
-    document.getElementById("clock").innerText =
-        new Date().toLocaleString();
-},1000);
-
-// Checkbox Generate
-const formAbsen = document.getElementById("formAbsen");
-for(let i=1;i<=totalSiswa;i++){
-    formAbsen.innerHTML+=
-    `<label><input type="checkbox" value="${i}" class="absen"> Siswa ${i}</label><br>`;
-}
-
+// Simpan absen
 function simpanAbsen(){
-    let data=[];
-    document.querySelectorAll(".absen:checked").forEach(cb=>{
-        data.push(cb.value);
-    });
-    localStorage.setItem(selectedDate.toDateString(),JSON.stringify(data));
+    let hadir = document.querySelectorAll(".absen:checked").length;
+    let persen = ((hadir/totalSiswa)*100).toFixed(1);
+    riwayat[today] = persen;
+    localStorage.setItem("riwayatAbsen", JSON.stringify(riwayat));
     updateChart();
 }
 
-function loadAbsen(){
-    let data = JSON.parse(localStorage.getItem(selectedDate.toDateString())) || [];
-    document.querySelectorAll(".absen").forEach(cb=>{
-        cb.checked = data.includes(cb.value);
-    });
-}
-
+// Grafik garis
 const ctx = document.getElementById("chart").getContext("2d");
 let chart = new Chart(ctx,{
-    type:"doughnut",
+    type:"line",
     data:{
-        labels:["Hadir","Tidak Hadir"],
+        labels:Object.keys(riwayat),
         datasets:[{
-            data:[33,0],
-            backgroundColor:["#28a745","#dc3545"]
+            label:"% Kehadiran",
+            data:Object.values(riwayat),
+            borderColor:"#007bff",
+            backgroundColor:"rgba(0,123,255,0.2)",
+            fill:true,
+            tension:0.4,
+            pointRadius:5
         }]
     },
-    options:{animation:{duration:1000}}
+    options:{
+        responsive:true,
+        animation:{duration:1000},
+        scales:{y:{beginAtZero:true,max:100}}
+    }
 });
 
 function updateChart(){
-    let data = JSON.parse(localStorage.getItem(selectedDate.toDateString())) || [];
-    chart.data.datasets[0].data = [totalSiswa-data.length,data.length];
+    chart.data.labels = Object.keys(riwayat);
+    chart.data.datasets[0].data = Object.values(riwayat);
     chart.update();
 }
 
@@ -272,8 +255,6 @@ function toggleDark(){
     document.body.classList.toggle("dark");
 }
 
-renderCalendar();
-loadAbsen();
 updateChart();
 </script>
 
