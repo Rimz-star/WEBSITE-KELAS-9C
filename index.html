@@ -13,8 +13,6 @@
         footer { background-color: #007bff; color: white; text-align: center; padding: 10px; }
         table { width: 100%; border-collapse: collapse; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-        .bar-chart { display: flex; justify-content: space-around; height: 200px; align-items: end; }
-        .bar { width: 50px; background-color: #007bff; color: white; text-align: center; margin: 0 5px; transition: height 0.5s; }
         .gallery { display: flex; flex-wrap: wrap; gap: 10px; }
         .gallery img { width: 150px; height: 150px; object-fit: cover; }
         .student { text-align: center; margin: 10px; }
@@ -22,6 +20,7 @@
         .attendance-form label { display: block; margin: 5px 0; }
         button { background-color: #007bff; color: white; border: none; padding: 10px; cursor: pointer; }
         button:hover { background-color: #0056b3; }
+        #chart { width: 100%; height: 300px; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
@@ -55,12 +54,7 @@
         </div>
         <h3>Grafik Kehadiran (Ringkasan Bulanan)</h3>
         <p id="summary">Total Hadir: 85% bulan ini. Siswa terbaik: 100% hadir.</p>
-        <div class="bar-chart" id="bar-chart">
-            <div class="bar" style="height: 90%;">90% (Minggu 1)</div>
-            <div class="bar" style="height: 95%;">95% (Minggu 2)</div>
-            <div class="bar" style="height: 85%;">85% (Minggu 3)</div>
-            <div class="bar" style="height: 88%;">88% (Minggu 4)</div>
-        </div>
+        <canvas id="chart"></canvas>
     </section>
 
     <section id="siswa">
@@ -243,11 +237,11 @@
         <h2>Jadwal</h2>
         <table>
             <tr><th>Hari</th><th>Jam 1</th><th>Jam 2</th><th>Jam 3</th><th>Jam 4</th><th>Jam 5</th></tr>
-            <tr><td>Senin</td><td>Olahraga</td><td>Ppkn</td><td>IPA</td></tr>
-            <tr><td>Selasa</td><td>SENI TARI</td><td>IPS</td><td>Pendidikan Agama ISLAM</td><td>Bahasa Inggris</td></tr>
-            <tr><td>Rabu</td><td>Matematika</td><td>Bahasa Indonesia s/d</td></tr>
+            <tr><td>Senin</td><td>Olahraga</td><td>Ppkn</td><td>IPA</td><td></td><td></td></tr>
+            <tr><td>Selasa</td><td>SENI TARI</td><td>IPS</td><td>Pendidikan Agama ISLAM</td><td>Bahasa Inggris</td><td></td></tr>
+            <tr><td>Rabu</td><td>Matematika</td><td>Bahasa Indonesia s/d</td><td></td><td></td><td></td></tr>
             <tr><td>Kamis</td><td>Bahasa Jawa</td><td>Ips</td><td>Ipa</td><td>Bahasa Indonesia</td><td>Matematika</td></tr>
-            <tr><td>Jumat</td><td>Informatika</td><td>Bahasa Inggris</td>PRAMUKA</tr>
+            <tr><td>Jumat</td><td>Informatika</td><td>Bahasa Inggris</td><td>PRAMUKA</td><td></td><td></td></tr>
         </table>
         <p>Catatan: Jadwal bisa berubah sesuai kebutuhan.</p>
     </section>
@@ -273,3 +267,9 @@
             <label><input type="checkbox" value="14"> Siswa 14</label>
             <label><input type="checkbox" value="15"> Siswa 15</label>
             <label><input type="checkbox" value="16"> Siswa 16</label>
+            <label><input type="checkbox" value="17"> Siswa 17</label>
+            <label><input type="checkbox" value="18"> Siswa 18</label>
+            <label><input type="checkbox" value="19"> Siswa 19</label>
+            <label><input type="checkbox" value="20"> Siswa 20</label>
+            <label><input type="checkbox" value="21"> Siswa 21</label>
+            <label><input type="checkbox" value="
