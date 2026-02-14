@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Kelas 9C</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        header { background-color: #007bff; color: white; padding: 10px; text-align: center; }
+        nav { background-color: #0056b3; padding: 10px; }
+        nav a { color: white; margin: 0 15px; text-decoration: none; }
+        section { padding: 20px; margin: 20px; background-color: white; border-radius: 5px; }
+        footer { background-color: #007bff; color: white; text-align: center; padding: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        .bar-chart { display: flex; justify-content: space-around; height: 200px; align-items: end; }
+        .bar { width: 50px; background-color: #007bff; color: white; text-align: center; margin: 0 5px; transition: height 0.5s; }
+        .gallery { display: flex; flex-wrap: wrap; gap: 10px; }
+        .gallery img { width: 150px; height: 150px; object-fit: cover; }
+        .student { text-align: center; margin: 10px; }
+        .attendance-form { margin-bottom: 20px; }
+        .attendance-form label { display: block; margin: 5px 0; }
+        button { background-color: #007bff; color: white; border: none; padding: 10px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Website Kelas 9C</h1>
+        <p>Sekolah Menegah Pertama</p>
+    </header>
+    <nav>
+        <a href="#beranda">Beranda</a>
+        <a href="#siswa">Siswa</a>
+        <a href="#jadwal">Jadwal</a>
+        <a href="#kehadiran">Kehadiran</a>
+        <a href="#kontak">Kontak</a>
+    </nav>
+
+    <section id="beranda">
+        <h2>Beranda</h2>
+        <p>Selamat datang di Kelas 9C Kami memiliki 33 siswa yang aktif dan Pintar.</p>
+        <h3>Berita Singkat</h3>
+        <ul>
+            <li>Ujian Praktek Bulan Depan.</li>
+            <li>Kegiatan olahraga Setiap Hari Senin .</li>
+            <li>Libur Tanggal 14-23/02/2026.</li>
+        </ul>
+        <h3>Foto Kelas</h3>
+        <div class="gallery">
+            <img src="https://via.placeholder.com/150?text=Foto+Kelas+1" alt="Foto Kelas 1">
+            <img src="https://via.placeholder.com/150?text=Foto+Kelas+2" alt="Foto Kelas 2">
+            <img src="https://via.placeholder.com/150?text=Foto+Kelas+3" alt="Foto Kelas 3">
+            <img src="https://via.placeholder.com/150?text=Foto+Kelas+4" alt="Foto Kelas 4">
+        </div>
+        <h3>Grafik Kehadiran (Ringkasan Bulanan)</h3>
+        <p id="summary">Total Hadir: 85% bulan ini. Siswa terbaik: 100% hadir.</p>
+        <div class="bar-chart" id="bar-chart">
+            <div class="bar" style="height: 90%;">90% (Minggu 1)</div>
+            <div class="bar" style="height: 95%;">95% (Minggu 2)</div>
+            <div class="bar" style="height: 85%;">85% (Minggu 3)</div>
+            <div class="bar" style="height: 88%;">88% (Minggu 4)</div>
+        </div>
+    </section>
+
+    <section id="siswa">
+        <h2>Siswa</h2>
+        <h3>Daftar Nama Siswa</h3>
+        <table>
+            <tr><th>No</th><th>Nama</th></tr>
+            <tr><td>1</td><td>Siswa 1</td></tr>
+            <tr><td>2</td><td>Siswa 2</td></tr>
+            <tr><td>3</td><td>Siswa 3</td></tr>
+            <tr><td>4</td><td>Siswa 4</td></tr>
+            <tr><td>5</td><td>Siswa 5</td></tr>
+            <tr><td>6</td><td>Siswa 6</td></tr>
+            <tr><td>7</td><td>Siswa 7</td></tr>
+            <tr><td>8</td><td>Siswa 8</td></tr>
+            <tr><td>9</td><td>Siswa 9</td></tr>
+            <tr><td>10</td><td>Siswa 10</td></tr>
+            <tr><td>11</td><td>Siswa 11</td></tr>
+            <tr><td>12</td><td>Siswa 12</td></tr>
+            <tr><td>13</td><td>Siswa 13</td></tr>
+            <tr><td>14</td><td>Siswa 14</td></tr>
+            <tr><td>15</td><td>Siswa 15</td></tr>
+            <tr><td>16</td><td>Siswa 16</td></tr>
+            <tr><td>17</td><td>Siswa 17</td></tr>
+            <tr><td>18</td><td>Siswa 18</td></tr>
+            <tr><td>19</td><td>Siswa 19</td></tr>
+            <tr><td>20</td><td>Siswa 20</td></tr>
+            <tr><td>21</td><td>Siswa 21</td></tr>
+            <tr><td>22</td><td>Siswa 22</td></tr>
+            <tr><td>23</td><td>Siswa 23</td></tr>
+            <tr><td>24</td><td>Siswa 24</td></tr>
+            <tr><td>25</td><td>Siswa 25</td></tr>
+            <tr><td>26</td><td>Siswa 26</td></tr>
+            <tr><td>27</td><td>Siswa 27</td></tr>
+            <tr><td>28</td><td>Siswa 28</td></tr>
+            <tr><td>29</td><td>Siswa 29</td></tr>
+            <tr><td>30</td><td>Siswa 30</td></tr>
+            <tr><td>31</td><td>Siswa 31</td></tr>
+            <tr><td>32</td><td>Siswa 32</td></tr>
+            <tr><td>33</td><td>Siswa 33</td></tr>
+        </table>
+        <h3>Foto Siswa</h3>
+        <div class="gallery">
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+1" alt="Siswa 1">
+                <p>Siswa yang rajin dan suka belajar.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+2" alt="Siswa 2">
+                <p>Siswa kreatif dalam seni.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+3" alt="Siswa 3">
+                <p>Siswa aktif dalam olahraga.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+4" alt="Siswa 4">
+                <p>Siswa yang suka membantu teman.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+5" alt="Siswa 5">
+                <p>Siswa cerdas dalam matematika.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+6" alt="Siswa 6">
+                <p>Siswa yang suka membaca.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+7" alt="Siswa 7">
+                <p>Siswa ramah dan sosial.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+8" alt="Siswa 8">
+                <p>Siswa yang suka musik.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+9" alt="Siswa 9">
+                <p>Siswa aktif dalam diskusi.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+10" alt="Siswa 10">
+                <p>Siswa yang suka eksplorasi.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+11" alt="Siswa 11">
+                <p>Siswa kreatif dalam gambar.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+12" alt="Siswa 12">
+                <p>Siswa yang suka olahraga tim.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+13" alt="Siswa 13">
+                <p>Siswa yang membantu guru.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+14" alt="Siswa 14">
+                <p>Siswa cerdas dalam sains.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+15" alt="Siswa 15">
+                <p>Siswa yang suka cerita.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+16" alt="Siswa 16">
+                <p>Siswa ramah dengan semua.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+17" alt="Siswa 17">
+                <p>Siswa yang suka bernyanyi.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+18" alt="Siswa 18">
+                <p>Siswa aktif dalam permainan.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+19" alt="Siswa 19">
+                <p>Siswa yang suka belajar bahasa.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+20" alt="Siswa 20">
+                <p>Siswa kreatif dalam kerajinan.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+21" alt="Siswa 21">
+                <p>Siswa yang suka olahraga individu.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+22" alt="Siswa 22">
+                <p>Siswa yang membantu teman belajar.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+23" alt="Siswa 23">
+                <p>Siswa cerdas dalam sejarah.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+24" alt="Siswa 24">
+                <p>Siswa yang suka menulis.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+25" alt="Siswa 25">
+                <p>Siswa ramah dan penuh semangat.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+26" alt="Siswa 26">
+                <p>Siswa yang suka musik klasik.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+27" alt="Siswa 27">
+                <p>Siswa aktif dalam kelompok studi.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+28" alt="Siswa 28">
+                <p>Siswa yang suka eksplorasi alam.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+29" alt="Siswa 29">
+                <p>Siswa kreatif dalam drama.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+30" alt="Siswa 30">
+                <p>Siswa yang suka olahraga ekstrem.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+31" alt="Siswa 31">
+                <p>Siswa yang membantu dalam proyek.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+32" alt="Siswa 32">
+                <p>Siswa cerdas dalam teknologi.</p>
+            </div>
+            <div class="student">
+                <img src="https://via.placeholder.com/150?text=Siswa+33" alt="Siswa 33">
+                <p>Siswa yang suka belajar budaya.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="jadwal">
+        <h2>Jadwal</h2>
+        <table>
+            <tr><th>Hari</th><th>Jam 1</th><th>Jam 2</th><th>Jam 3</th><th>Jam 4</th><th>Jam 5</th></tr>
+            <tr><td>Senin</td><td>Olahraga</td><td>Ppkn</td><td>IPA</td></tr>
+            <tr><td>Selasa</td><td>SENI TARI</td><td>IPS</td><td>Pendidikan Agama ISLAM</td><td>Bahasa Inggris</td></tr>
+            <tr><td>Rabu</td><td>Matematika</td><td>Bahasa Indonesia s/d</td></tr>
+            <tr><td>Kamis</td><td>Bahasa Jawa</td><td>Ips</td><td>Ipa</td><td>Bahasa Indonesia</td><td>Matematika</td></tr>
+            <tr><td>Jumat</td><td>Informatika</td><td>Bahasa Inggris</td>PRAMUKA</tr>
+        </table>
+        <p>Catatan: Jadwal bisa berubah sesuai kebutuhan.</p>
+    </section>
+
+    <section id="kehadiran">
+        <h2>Kehadiran</h2>
+        <h3>Input Kehadiran Harian</h3>
+        <p>Centang siswa yang tidak masuk hari ini:</p>
+        <form class="attendance-form" id="attendance-form">
+            <label><input type="checkbox" value="1"> Siswa 1</label>
+            <label><input type="checkbox" value="2"> Siswa 2</label>
+            <label><input type="checkbox" value="3"> Siswa 3</label>
+            <label><input type="checkbox" value="4"> Siswa 4</label>
+            <label><input type="checkbox" value="5"> Siswa 5</label>
+            <label><input type="checkbox" value="6"> Siswa 6</label>
+            <label><input type="checkbox" value="7"> Siswa 7</label>
+            <label><input type="checkbox" value="8"> Siswa 8</label>
+            <label><input type="checkbox" value="9"> Siswa 9</label>
+            <label><input type="checkbox" value="10"> Siswa 10</label>
+            <label><input type="checkbox" value="11"> Siswa 11</label>
+            <label><input type="checkbox" value="12"> Siswa 12</label>
+            <label><input type="checkbox" value="13"> Siswa 13</label>
+            <label><input type="checkbox" value="14"> Siswa 14</label>
+            <label><input type="checkbox" value="15"> Siswa 15</label>
+            <label><input type="checkbox" value="16"> Siswa 16</label>
