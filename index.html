@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Website Kelas 9C</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
 body{background:#f4f4f4;transition:.4s}
@@ -21,12 +22,13 @@ button{padding:6px 12px;border:none;border-radius:6px;background:#007bff;color:w
 button.delete{background:#dc3545}
 footer{background:#007bff;color:white;text-align:center;padding:15px;margin-top:20px}
 input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
-
-/* Galeri 16:9 responsive */
 .gallery{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
 .gallery img{width:32%;aspect-ratio:16/9;border-radius:8px;object-fit:cover}
 @media(max-width:768px){.gallery img{width:48%;}}
 @media(max-width:480px){.gallery img{width:100%;}}
+.jadwal-wrapper{overflow-x:auto;}
+.jadwal-wrapper table{min-width:700px;width:100%;}
+@media(min-width:1024px){.jadwal-wrapper table{min-width:0;}}
 
 /* Warna Jadwal */
 .upacara{background:#ff8c00;color:white}
@@ -44,11 +46,6 @@ input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
 .tka{background:#ffb347}
 .senam{background:#ff6347;color:white}
 .istirahat{background:#ffd700}
-
-/* Jadwal responsive scroll di mobile */
-.jadwal-wrapper{overflow-x:auto;}
-.jadwal-wrapper table{min-width:700px;width:100%}
-@media(min-width:1024px){.jadwal-wrapper table{min-width:0;}}
 </style>
 </head>
 <body>
@@ -71,9 +68,9 @@ input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
 <h2>Beranda</h2>
 <p>Selamat datang di Kelas 9C! Kami memiliki siswa aktif dan kreatif.</p>
 <div class="gallery">
-<img src="FILE FOTO/jumanji.JPG" alt="Foto 1">
-<img src="FILE FOTO/olahraga.jpg" alt="Foto 2">
-<img src="FILE FOTO/foto3.jpg" alt="Foto 3">
+  <img src="FILE%20FOTO/jumanji.JPG" alt="Foto 1">
+  <img src="FILE%20FOTO/olahraga.jpg" alt="Foto 2">
+  <img src="FILE%20FOTO/foto3.jpg" alt="Foto 3">
 </div>
 </section>
 
@@ -105,7 +102,8 @@ input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
 <div class="jadwal-wrapper">
 <table>
 <tr>
-<th>Hari</th><th>07:00</th><th>08:00</th><th>09:00</th>
+<th>Hari</th>
+<th>07:00</th><th>08:00</th><th>09:00</th>
 <th>10:00</th><th>11:00</th><th>12:00</th><th>13:00</th>
 </tr>
 <tr><td>Senin</td><td class="upacara">Upacara</td><td class="mat1">Olahraga</td><td class="ppkn">PPKN</td><td class="mat5">IPA</td><td class="mat5">IPA</td><td class="istirahat">Ishoma</td><td class="mat3">Matematika</td></tr>
@@ -135,11 +133,9 @@ width="100%" height="350" style="border:0;border-radius:12px;" allowfullscreen="
 </footer>
 
 <script type="module">
-// Firebase Realtime Database
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import { getDatabase, ref, push, set, onValue, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-// Konfigurasi Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAm3_vVK3NwBTcAaa4FLTg7bBb6W12GLQo",
   authDomain: "kelas9crhonix.firebaseapp.com",
@@ -151,66 +147,78 @@ const firebaseConfig = {
   measurementId: "G-J7F71WP7HJ"
 };
 
-// Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-const siswaRef = ref(database, "siswa");
-
+const db = getDatabase(app);
+const siswaRef = ref(db, "siswa");
 const tabel = document.getElementById("tabelSiswa");
 const today = new Date().toLocaleDateString();
 
-// Chart.js
-const ctx = document.getElementById("chart");
-window.chart = new Chart(ctx, {
-  type: "line",
-  data: { labels: [], datasets:[{label:"% Kehadiran", data:[], borderColor:"#007bff", backgroundColor:"rgba(0,123,255,0.2)", fill:true}] },
-  options:{responsive:true, scales:{y:{beginAtZero:true, max:100}}}
-});
+// ===== FUNGSI =====
+async function resetHadirJikaPerlu() {
+  const now = new Date();
+  const jam = now.getHours();
+  const tanggal = now.toLocaleDateString();
+  const lastReset = localStorage.getItem("lastReset") || "";
+  if(lastReset !== tanggal && jam >= 7){
+    const snapshot = await get(siswaRef);
+    snapshot.forEach(snap => set(ref(db, `siswa/${snap.key}/absen/${tanggal}`), false));
+    localStorage.setItem("lastReset", tanggal);
+  }
+}
 
-// Fungsi tambah, edit, hapus, absen
 window.tambahSiswa = function(){
   let nama = document.getElementById("namaBaru").value;
   let jk = document.getElementById("jkBaru").value;
   if(!nama) return alert("Isi nama dulu!");
   push(siswaRef, { nama, jk, absen:{} });
-  document.getElementById("namaBaru").value = "";
+  document.getElementById("namaBaru").value="";
 }
-window.editNama = function(key, nama){ set(ref(database, `siswa/${key}/nama`), nama.trim()); }
-window.editJK = function(key, jk){ set(ref(database, `siswa/${key}/jk`), jk); }
-window.hapusSiswa = function(key){ if(confirm("Yakin hapus siswa?")) set(ref(database, `siswa/${key}`), null); }
-window.toggleAbsen = function(key, hadir){ set(ref(database, `siswa/${key}/absen/${today}`), hadir); }
 
-// Realtime tampilkan siswa dan update chart
-onValue(siswaRef, snapshot=>{
-  tabel.innerHTML="";
-  let hadirCount = 0, total = snapshot.size;
-  snapshot.forEach(childSnap=>{
-    const key = childSnap.key;
-    const s = childSnap.val();
-    const hadirHariIni = s.absen?.[today] || false;
-    if(hadirHariIni) hadirCount++;
-    tabel.innerHTML+=`
-      <tr>
-        <td>${tabel.rows.length+1}</td>
-        <td contenteditable="true" onblur="editNama('${key}', this.innerText)">${s.nama}</td>
-        <td>
-          <select onchange="editJK('${key}', this.value)">
-            <option value="L" ${s.jk==="L"?"selected":""}>L</option>
-            <option value="P" ${s.jk==="P"?"selected":""}>P</option>
-          </select>
-        </td>
-        <td><input type="checkbox" onchange="toggleAbsen('${key}', this.checked)" ${hadirHariIni?'checked':''}></td>
-        <td><button onclick="hapusSiswa('${key}')">Hapus</button></td>
-      </tr>
-    `;
+window.editNama = function(key,nama){ set(ref(db, `siswa/${key}/nama`), nama.trim()); }
+window.editJK = function(key,jk){ set(ref(db, `siswa/${key}/jk`), jk); }
+window.hapusSiswa = function(key){ if(confirm("Yakin hapus siswa?")) set(ref(db, `siswa/${key}`), null); }
+window.toggleAbsen = function(key, hadir){ set(ref(db, `siswa/${key}/absen/${today}`), hadir); }
+
+function hitungPersentase(snapshot){
+  let hadirCount = 0;
+  snapshot.forEach(childSnap => {
+    if(childSnap.val().absen?.[today]) hadirCount++;
   });
-  const persen = total>0 ? (hadirCount/total*100).toFixed(1) : 0;
-  window.chart.data.labels = [today];
-  window.chart.data.datasets[0].data = [persen];
-  window.chart.update();
-});
+  return snapshot.size > 0 ? (hadirCount/snapshot.size*100).toFixed(1) : 0;
+}
 
+async function tampilkanSiswa(){
+  await resetHadirJikaPerlu();
+  onValue(siswaRef, snapshot=>{
+    tabel.innerHTML="";
+    snapshot.forEach((childSnap, index)=>{
+      const key = childSnap.key;
+      const s = childSnap.val();
+      const hadirHariIni = s.absen?.[today] || false;
+      tabel.innerHTML+=`
+        <tr>
+          <td>${index+1}</td>
+          <td contenteditable="true" onblur="editNama('${key}', this.innerText)">${s.nama}</td>
+          <td>
+            <select onchange="editJK('${key}', this.value)">
+              <option value="L" ${s.jk==="L"?"selected":""}>L</option>
+              <option value="P" ${s.jk==="P"?"selected":""}>P</option>
+            </select>
+          </td>
+          <td><input type="checkbox" onchange="toggleAbsen('${key}', this.checked)" ${hadirHariIni?'checked':''}></td>
+          <td><button onclick="hapusSiswa('${key}')">Hapus</button></td>
+        </tr>`;
+    });
+    const persen = hitungPersentase(snapshot);
+    window.chart.data.labels = [today];
+    window.chart.data.datasets[0].data = [persen];
+    window.chart.update();
+  });
+}
+
+tampilkanSiswa();
 function toggleDark(){ document.body.classList.toggle("dark"); }
 </script>
+
 </body>
 </html>
