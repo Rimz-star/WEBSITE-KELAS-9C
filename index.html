@@ -23,7 +23,7 @@ button.delete{background:#dc3545}
 footer{background:#007bff;color:white;text-align:center;padding:15px;margin-top:20px}
 input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
 .gallery{display:flex;gap:10px;margin-top:10px}
-.gallery img{width:150px;height:150px;border-radius:8px}
+.gallery img{width:150px;height:150px;border-radius:8px;object-fit:cover}
 
 /* Warna Jadwal */
 .upacara{background:#ff8c00;color:white}
@@ -64,9 +64,9 @@ input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
 <h2>Beranda</h2>
 <p>Selamat datang di Kelas 9C! Kami memiliki siswa aktif dan kreatif.</p>
 <div class="gallery">
-<img src="FILE FOTO/jumanji.jpg/150?text=Foto+1">
-<img src="https://via.placeholder.com/150?text=Foto+2">
-<img src="https://via.placeholder.com/150?text=Foto+3">
+<img src="FILE%20FOTO/jumanji.jpg" alt="Foto 1">
+<img src="FILE%20FOTO/olahraga.jpg" alt="Foto 2">
+<img src="FILE%20FOTO/foto3.jpg" alt="Foto 3">
 </div>
 </section>
 
@@ -178,12 +178,13 @@ width="100%" height="350" style="border:0;border-radius:12px;" allowfullscreen="
 
 <script>
 let dataSiswa = JSON.parse(localStorage.getItem("dataSiswa")) || [];
+let riwayat = JSON.parse(localStorage.getItem("riwayatAbsen")) || {};
+const today = new Date().toLocaleDateString();
+const tabel = document.getElementById("tabelSiswa");
 
 function simpanDatabase(){
 localStorage.setItem("dataSiswa",JSON.stringify(dataSiswa));
 }
-
-const tabel=document.getElementById("tabelSiswa");
 
 function tampilkanSiswa(){
 tabel.innerHTML="";
@@ -195,8 +196,8 @@ tabel.innerHTML+=`
 ${siswa.nama}</td>
 <td>
 <select onchange="editJK(${index},this.value)">
-<option ${siswa.jk==="L"?"selected":""}>L</option>
-<option ${siswa.jk==="P"?"selected":""}>P</option>
+<option value="L" ${siswa.jk==="L"?"selected":""}>L</option>
+<option value="P" ${siswa.jk==="P"?"selected":""}>P</option>
 </select>
 </td>
 <td><button class="delete" onclick="hapusSiswa(${index})">Hapus</button></td>
@@ -216,7 +217,7 @@ document.getElementById("namaBaru").value="";
 }
 
 function editNama(index,namaBaru){
-dataSiswa[index].nama=namaBaru;
+dataSiswa[index].nama=namaBaru.trim();
 simpanDatabase();
 }
 
@@ -241,10 +242,8 @@ absenList.innerHTML+=`<label><input type="checkbox" class="absen"> ${siswa.nama}
 });
 }
 
-let riwayat=JSON.parse(localStorage.getItem("riwayatAbsen"))||{};
-const today=new Date().toLocaleDateString();
-
 function simpanAbsen(){
+if(dataSiswa.length===0) return alert("Belum ada siswa!");
 let hadir=document.querySelectorAll(".absen:checked").length;
 let persen=((hadir/dataSiswa.length)*100).toFixed(1);
 riwayat[today]=persen;
@@ -254,12 +253,16 @@ updateChart();
 
 const chart=new Chart(document.getElementById("chart"),{
 type:"line",
-data:{labels:Object.keys(riwayat),
-datasets:[{label:"% Kehadiran",
+data:{
+labels:Object.keys(riwayat),
+datasets:[{
+label:"% Kehadiran",
 data:Object.values(riwayat),
 borderColor:"#007bff",
 backgroundColor:"rgba(0,123,255,0.2)",
-fill:true}]},
+fill:true
+}]
+},
 options:{responsive:true,scales:{y:{beginAtZero:true,max:100}}}
 });
 
