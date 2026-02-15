@@ -155,11 +155,24 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-let dataSiswa = [
-  {nama:"Andi",jk:"L"},{nama:"Budi",jk:"L"},{nama:"Citra",jk:"P"},{nama:"Dewi",jk:"P"}
-];
 const today = new Date().toLocaleDateString();
 const tabel = document.getElementById("tabelSiswa");
+
+let dataSiswa = [];
+
+// Ambil data siswa dari Firebase saat load
+db.ref('dataSiswa').once('value', snap => {
+  if(snap.exists()){
+    dataSiswa = snap.val();
+  } else {
+    // Data default jika belum ada
+    dataSiswa = [
+      {nama:"Andi",jk:"L"},{nama:"Budi",jk:"L"},{nama:"Citra",jk:"P"},{nama:"Dewi",jk:"P"}
+    ];
+    db.ref('dataSiswa').set(dataSiswa);
+  }
+  tampilkanSiswa();
+});
 
 function tampilkanSiswa(){
   tabel.innerHTML="";
@@ -181,7 +194,7 @@ function tampilkanSiswa(){
       </tr>`;
     });
   });
-  setTimeout(updateChart,500); // beri waktu load checkbox
+  setTimeout(updateChart,500);
 }
 
 function tambahSiswa(){
@@ -189,13 +202,28 @@ function tambahSiswa(){
   let jk=document.getElementById("jkBaru").value;
   if(!nama) return alert("Isi nama dulu!");
   dataSiswa.push({nama,jk});
+  db.ref('dataSiswa').set(dataSiswa); // simpan ke Firebase
   tampilkanSiswa();
   document.getElementById("namaBaru").value="";
 }
 
-function editNama(i,val){ dataSiswa[i].nama=val.trim(); }
-function editJK(i,val){ dataSiswa[i].jk=val; }
-function hapusSiswa(i){ if(confirm("Yakin hapus siswa?")){ dataSiswa.splice(i,1); tampilkanSiswa(); } }
+function editNama(i,val){
+  dataSiswa[i].nama=val.trim();
+  db.ref('dataSiswa').set(dataSiswa); // update Firebase
+}
+
+function editJK(i,val){
+  dataSiswa[i].jk=val;
+  db.ref('dataSiswa').set(dataSiswa); // update Firebase
+}
+
+function hapusSiswa(i){
+  if(confirm("Yakin hapus siswa?")){
+    dataSiswa.splice(i,1);
+    db.ref('dataSiswa').set(dataSiswa); // update Firebase
+    tampilkanSiswa();
+  }
+}
 
 function simpanTidakMasuk(){
   dataSiswa.forEach((s,i)=>{
@@ -240,8 +268,6 @@ function updateChart(){
 document.getElementById("darkModeBtn").addEventListener("click",()=>{
   document.body.classList.toggle("dark");
 });
-
-tampilkanSiswa();
 </script>
 
 </body>
