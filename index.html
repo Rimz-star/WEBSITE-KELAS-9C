@@ -5,248 +5,267 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Website Kelas 9C</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
 body{background:#f4f4f4;transition:.4s}
 body.dark{background:#121212;color:white}
 header{background:#007bff;color:white;padding:20px;text-align:center}
 nav{background:#0056b3;padding:10px;text-align:center}
-nav a{color:white;margin:0 15px;text-decoration:none}
+nav a{color:white;margin:0 15px;text-decoration:none;font-weight:bold}
 section{padding:25px;margin:20px;background:white;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.1);animation:fade .6s ease}
 body.dark section{background:#1e1e1e}
 @keyframes fade{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 table{width:100%;border-collapse:collapse;margin-top:10px}
 th,td{border:1px solid #ddd;padding:8px;text-align:center;font-size:12px}
 th{background:#007bff;color:white}
-.gallery{display:flex;flex-wrap:wrap;gap:10px}
+.gallery{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
 .gallery img{width:150px;height:150px;object-fit:cover;border-radius:8px;transition:.3s}
 .gallery img:hover{transform:scale(1.05)}
-.student{text-align:center;margin:10px}
 button{padding:8px 15px;border:none;border-radius:6px;background:#007bff;color:white;cursor:pointer;margin-top:10px}
 footer{background:#007bff;color:white;text-align:center;padding:15px;margin-top:20px}
+input{padding:8px;border-radius:6px;border:1px solid #ccc;margin-bottom:10px}
 
-/* Warna kode mata pelajaran */
-.mat1{background:#ff9999}  /* Olahraga */
-.mat2{background:#99ccff}  /* Seni Tari */
-.mat3{background:#99ff99}  /* Matematika */
-.mat4{background:#ffcc99}  /* Bahasa Jawa */
-.mat5{background:#b19cd9}  /* IPA ungu muda */
-.mat6{background:#ffff99}  /* Informatika */
-.mat7{background:#66ffff}  /* Olahraga Jumat */
-.tka{background:#ffb347;color:black}
-.sholat{background:#90ee90;color:black}
-.mbg{background:#ff6961;color:black}
-.istirahat{background:#ffd700;color:black}
-/* Warna tambahan untuk jadwal baru */
-.upacara{background:#ff8c00;color:white}      /* Upacara oranye tua */
-.ppkn{background:#87cefa;color:black}        /* PPKN biru muda */
-.ips{background:#ffa07a;color:black}         /* IPS salmon */
-.pa{background:#dda0dd;color:black}          /* Pendidikan Agama ungu muda */
-.binggris{background:#7fffd4;color:black}    /* Bahasa Inggris aqua */
-.bindo{background:#f08080;color:black}       /* Bahasa Indonesia */
-.senam{background:#ff6347;color:white}       /* Senam merah tomat */
+/* Warna Jadwal */
+.upacara{background:#ff8c00;color:white}
+.mat1{background:#ff9999}
+.mat2{background:#99ccff}
+.mat3{background:#99ff99}
+.mat4{background:#ffcc99}
+.mat5{background:#b19cd9}
+.mat6{background:#ffff99}
+.ppkn{background:#87cefa}
+.ips{background:#ffa07a}
+.pa{background:#dda0dd}
+.binggris{background:#7fffd4}
+.bindo{background:#f08080}
+.tka{background:#ffb347}
+.senam{background:#ff6347;color:white}
+.istirahat{background:#ffd700}
 </style>
 </head>
+
 <body>
 
 <header>
-    <h1>Website Kelas 9C</h1>
-    <p>Sekolah Menengah Pertama</p>
-    <button onclick="toggleDark()">🌙 Dark Mode</button>
+<h1>Website Kelas 9C</h1>
+<p>Sekolah Menengah Pertama</p>
+<button onclick="toggleDark()">🌙 Dark Mode</button>
 </header>
 
 <nav>
-    <a href="#beranda">Beranda</a>
-    <a href="#siswa">Siswa</a>
-    <a href="#jadwal">Jadwal</a>
-    <a href="#kehadiran">Kehadiran</a>
-    <a href="#kontak">Kontak</a>
+<a href="#beranda">Beranda</a>
+<a href="#siswa">Siswa</a>
+<a href="#jadwal">Jadwal</a>
+<a href="#kehadiran">Kehadiran</a>
+<a href="#kontak">Kontak</a>
 </nav>
 
 <section id="beranda">
-    <h2>Beranda</h2>
-    <p>Selamat datang di Kelas 9C! Kami memiliki 33 siswa yang aktif dan kreatif.</p>
-    <h3>Berita Singkat</h3>
-    <ul>
-        <li>Ujian matematika minggu depan.</li>
-        <li>Kegiatan olahraga hari Jumat.</li>
-        <li>Libur akhir bulan.</li>
-    </ul>
-    <h3>Foto Kelas</h3>
-    <div class="gallery">
-        <img src="https://via.placeholder.com/150?text=Foto+Kelas+1">
-        <img src="https://via.placeholder.com/150?text=Foto+Kelas+2">
-        <img src="https://via.placeholder.com/150?text=Foto+Kelas+3">
-        <img src="https://via.placeholder.com/150?text=Foto+Kelas+4">
-    </div>
+<h2>Beranda</h2>
+<p>Selamat datang di Kelas 9C! Kami memiliki 33 siswa aktif dan kreatif.</p>
+<h3>Berita</h3>
+<ul>
+<li>Ujian matematika minggu depan.</li>
+<li>Kegiatan olahraga hari Jumat.</li>
+<li>Libur akhir bulan.</li>
+</ul>
+<h3>Galeri Kelas</h3>
+<div class="gallery">
+<img src="https://via.placeholder.com/150?text=Foto+1">
+<img src="https://via.placeholder.com/150?text=Foto+2">
+<img src="https://via.placeholder.com/150?text=Foto+3">
+<img src="https://via.placeholder.com/150?text=Foto+4">
+</div>
 </section>
 
 <section id="siswa">
-    <h2>Daftar Siswa</h2>
-    <table>
-        <tr><th>No</th><th>Nama</th></tr>
-        <tbody id="tabelSiswa"></tbody>
-    </table>
+<h2>Daftar Siswa</h2>
+<input type="text" id="searchInput" placeholder="Cari nama siswa...">
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>No Absen</th>
+<th>Nama</th>
+<th>Jenis Kelamin</th>
+</tr>
+</thead>
+<tbody id="tabelSiswa"></tbody>
+</table>
+
+<h3 style="margin-top:30px;">Grafik Jumlah Siswa</h3>
+<canvas id="genderChart"></canvas>
 </section>
 
 <section id="jadwal">
-    <h2>Jadwal Pelajaran 07:00 - 13:40</h2>
-    <table>
-        <tr>
-            <th>Hari</th>
-            <th>07:00</th><th>07:30</th><th>08:00</th><th>08:30</th>
-            <th>09:00</th><th>09:30</th><th>10:00</th><th>10:30</th>
-            <th>11:00</th><th>11:30</th><th>12:00</th><th>12:30</th><th>13:00</th><th>13:30</th>
-        </tr>
-
-        <!-- Senin -->
-        <tr>
-            <td>Senin</td>
-            <td colspan="2" class="upacara">Upacara</td>
-            <td colspan="2" class="mat1">Olahraga</td>
-            <td colspan="1" class="istirahat">Istirahat</td>
-            <td colspan="2" class="ppkn">PPKN</td>
-            <td colspan="2" class="mat5">IPA</td>
-            <td colspan="2" class="istirahat">Ishoma</td>
-            <td colspan="3" class="mat5">IPA</td>
-        </tr>
-
-        <!-- Selasa -->
-        <tr>
-            <td>Selasa</td>
-            <td colspan="3" class="mat2">Seni Tari</td>
-            <td colspan="1" class="ips">IPS</td>
-            <td colspan="1" class="istirahat">Istirahat</td>
-            <td colspan="1" class="ips">IPS</td>
-            <td colspan="3" class="pa">Pendidikan Agama Islam</td>
-            <td colspan="2" class="istirahat">Ishoma</td>
-            <td colspan="3" class="binggris">Bahasa Inggris</td>
-        </tr>
-
-        <!-- Rabu -->
-        <tr>
-            <td>Rabu</td>
-            <td colspan="3" class="tka">TKA</td>
-            <td colspan="1" class="mat3">Matematika</td>
-            <td colspan="1" class="istirahat">Istirahat</td>
-            <td colspan="1" class="mat3">Matematika</td>
-            <td colspan="3" class="bindo">Bahasa Indonesia</td>
-            <td colspan="2" class="istirahat">Ishoma</td>
-            <td colspan="3" class="bindo">Bahasa Indonesia</td>
-        </tr>
-
-        <!-- Kamis -->
-        <tr>
-            <td>Kamis</td>
-            <td colspan="3" class="mat4">Bahasa Jawa</td>
-            <td colspan="1" class="mat5">IPA</td>
-            <td colspan="1" class="istirahat">Istirahat</td>
-            <td colspan="1" class="ips">IPS</td>
-            <td colspan="3" class="bindo">Bahasa Indonesia</td>
-            <td colspan="2" class="istirahat">Ishoma</td>
-            <td colspan="3" class="mat3">Matematika</td>
-        </tr>
-
-        <!-- Jumat (baru) -->
-        <tr>
-            <td>Jumat</td>
-            <td colspan="2" class="senam">Senam Bersama</td>
-            <td colspan="2" class="mat6">Informatika</td>
-            <td colspan="2" class="binggris">Bahasa Inggris</td>
-            <td colspan="3" class="tka">TKA</td>
-            <td colspan="6" class="istirahat">Ishoma</td>
-        </tr>
-    </table>
+<h2>Jadwal Pelajaran</h2>
+<table>
+<tr>
+<th>Hari</th><th>07:00</th><th>08:00</th><th>09:00</th><th>10:00</th><th>11:00</th><th>12:00</th><th>13:00</th>
+</tr>
+<tr>
+<td>Senin</td>
+<td class="upacara">Upacara</td>
+<td class="mat1">Olahraga</td>
+<td class="ppkn">PPKN</td>
+<td class="mat5">IPA</td>
+<td class="mat5">IPA</td>
+<td class="istirahat">Ishoma</td>
+<td class="mat3">Matematika</td>
+</tr>
+<tr>
+<td>Selasa</td>
+<td class="mat2">Seni Tari</td>
+<td class="ips">IPS</td>
+<td class="pa">PAI</td>
+<td class="binggris">B.Inggris</td>
+<td class="istirahat">Istirahat</td>
+<td class="binggris">B.Inggris</td>
+<td class="mat3">Matematika</td>
+</tr>
+<tr>
+<td>Rabu</td>
+<td class="tka">TKA</td>
+<td class="mat3">Matematika</td>
+<td class="bindo">B.Indonesia</td>
+<td class="istirahat">Istirahat</td>
+<td class="bindo">B.Indonesia</td>
+<td class="mat5">IPA</td>
+<td class="mat4">B.Jawa</td>
+</tr>
+<tr>
+<td>Jumat</td>
+<td class="senam">Senam</td>
+<td class="mat6">Informatika</td>
+<td class="binggris">B.Inggris</td>
+<td class="tka">TKA</td>
+<td colspan="3" class="istirahat">Ishoma</td>
+</tr>
+</table>
 </section>
 
 <section id="kehadiran">
-    <h2>Kehadiran</h2>
-    <canvas id="chart"></canvas>
-    <h3>Input Kehadiran Hari Ini</h3>
-    <div id="absenList"></div>
-    <button onclick="simpanAbsen()">Simpan Kehadiran</button>
+<h2>Kehadiran</h2>
+<canvas id="chart"></canvas>
+<h3>Input Kehadiran</h3>
+<div id="absenList"></div>
+<button onclick="simpanAbsen()">Simpan Kehadiran</button>
 </section>
 
 <section id="kontak">
-    <h2>Kontak</h2>
-    <p>Wali Kelas: Bu Puji Purwanti S.Pd</p>
-    <p>Email: smpn.kebasen@gmail.com</p>
-    <p>Telepon: 08123456789</p>
-
-    <h3>Lokasi Sekolah</h3>
-    <iframe src="https://www.google.com/maps/embed?pb=!4v1771056824645!6m8!1m7!1stXaGA0T9dO-RDRYPpPtCyw!2m2!1d-7.543791611521065!2d109.2148921992591!3f188.93249147118826!4f-8.199027963207442!5f0.7820865974627469" width="100%" height="450" style="border:0;border-radius:12px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-    <p style="margin-top:10px;">
-        Sekolah Menengah Pertama Negeri 1 Kebasen terletak di Jl. Ngalisiswi, Desa kalisalak, Kecamatan banyumas, Kabupaten banyumas. 
-        Sekolah ini memiliki fasilitas lengkap, ruang kelas nyaman, dan lingkungan yang mendukung proses belajar-mengajar yang efektif.
-    </p>
+<h2>Kontak</h2>
+<p>Wali Kelas: Bu Puji Purwanti S.Pd</p>
+<p>Email: smpn.kebasen@gmail.com</p>
+<p>Telepon: 08123456789</p>
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.330632!2d109.21489!3d-7.54379"
+width="100%" height="300" style="border:0;border-radius:12px;margin-top:10px;" allowfullscreen="" loading="lazy"></iframe>
 </section>
 
 <footer>
-    &copy; 2026 Sekolah Menengah Pertama - Kelas 9C
+&copy; 2026 Website Kelas 9C
 </footer>
 
 <script>
-// Generate siswa
-const totalSiswa = 33;
-const tabel = document.getElementById("tabelSiswa");
+const dataSiswa=[
+{absen:1,nama:"Ahmad Rizky Pratama",jk:"L"},
+{absen:2,nama:"Alif Ramadhan",jk:"L"},
+{absen:3,nama:"Andi Saputra",jk:"L"},
+{absen:4,nama:"Bagas Dwi Cahyo",jk:"L"},
+{absen:5,nama:"Daffa Maulana",jk:"L"},
+{absen:6,nama:"Dimas Arya Putra",jk:"L"},
+{absen:7,nama:"Fajar Nugroho",jk:"L"},
+{absen:8,nama:"Galang Prasetyo",jk:"L"},
+{absen:9,nama:"Hafiz Akbar",jk:"L"},
+{absen:10,nama:"Irfan Hidayat",jk:"L"},
+{absen:11,nama:"Muhammad Ardiansyah",jk:"L"},
+{absen:12,nama:"Naufal Al Ghifari",jk:"L"},
+{absen:13,nama:"Rafi Pratama",jk:"L"},
+{absen:14,nama:"Raka Saputra",jk:"L"},
+{absen:15,nama:"Reza Firmansyah",jk:"L"},
+{absen:16,nama:"Satria Adi Wijaya",jk:"L"},
+{absen:17,nama:"Vino Alfarizi",jk:"L"},
+{absen:18,nama:"Yoga Pranata",jk:"L"},
+{absen:19,nama:"Zidan Maulana",jk:"L"},
+{absen:20,nama:"Aisyah Putri Ramadhani",jk:"P"},
+{absen:21,nama:"Amelia Zahra",jk:"P"},
+{absen:22,nama:"Annisa Rahmawati",jk:"P"},
+{absen:23,nama:"Aulia Safitri",jk:"P"},
+{absen:24,nama:"Dea Lestari",jk:"P"},
+{absen:25,nama:"Dinda Cahyaningrum",jk:"P"},
+{absen:26,nama:"Fitri Handayani",jk:"P"},
+{absen:27,nama:"Nabila Putri",jk:"P"},
+{absen:28,nama:"Nadya Khairunnisa",jk:"P"},
+{absen:29,nama:"Putri Ayu Lestari",jk:"P"},
+{absen:30,nama:"Rania Salsabila",jk:"P"},
+{absen:31,nama:"Salsa Billa",jk:"P"},
+{absen:32,nama:"Syifa Aulia",jk:"P"},
+{absen:33,nama:"Zahra Nabila",jk:"P"}
+];
+
+const tabel=document.getElementById("tabelSiswa");
+function tampilkanSiswa(filter=""){
+tabel.innerHTML="";
+dataSiswa.filter(s=>s.nama.toLowerCase().includes(filter.toLowerCase()))
+.forEach((siswa,index)=>{
+tabel.innerHTML+=`<tr>
+<td>${index+1}</td>
+<td>${siswa.absen}</td>
+<td>${siswa.nama}</td>
+<td>${siswa.jk}</td>
+</tr>`;
+});
+}
+document.getElementById("searchInput")
+.addEventListener("keyup",function(){tampilkanSiswa(this.value);});
+tampilkanSiswa();
+
+let jumlahL=dataSiswa.filter(s=>s.jk==="L").length;
+let jumlahP=dataSiswa.filter(s=>s.jk==="P").length;
+new Chart(document.getElementById("genderChart"),{
+type:"pie",
+data:{labels:["Laki-laki","Perempuan"],
+datasets:[{data:[jumlahL,jumlahP],backgroundColor:["#3498db","#e84393"]}]},
+options:{responsive:true}
+});
+
+const totalSiswa=dataSiswa.length;
+const absenList=document.getElementById("absenList");
 for(let i=1;i<=totalSiswa;i++){
-    tabel.innerHTML += `<tr><td>${i}</td><td>Siswa ${i}</td></tr>`;
+absenList.innerHTML+=`<label><input type="checkbox" class="absen"> Siswa ${i}</label><br>`;
 }
 
-// Generate checkbox absen
-const absenList = document.getElementById("absenList");
-for(let i=1;i<=totalSiswa;i++){
-    absenList.innerHTML += `<label><input type="checkbox" value="${i}" class="absen"> Siswa ${i}</label><br>`;
-}
+let riwayat=JSON.parse(localStorage.getItem("riwayatAbsen"))||{};
+const today=new Date().toLocaleDateString();
 
-// Ambil riwayat absen
-const today = new Date().toLocaleDateString();
-let riwayat = JSON.parse(localStorage.getItem("riwayatAbsen")) || {};
-
-// Simpan absen
 function simpanAbsen(){
-    let hadir = document.querySelectorAll(".absen:checked").length;
-    let persen = ((hadir/totalSiswa)*100).toFixed(1);
-    riwayat[today] = persen;
-    localStorage.setItem("riwayatAbsen", JSON.stringify(riwayat));
-    updateChart();
+let hadir=document.querySelectorAll(".absen:checked").length;
+let persen=((hadir/totalSiswa)*100).toFixed(1);
+riwayat[today]=persen;
+localStorage.setItem("riwayatAbsen",JSON.stringify(riwayat));
+updateChart();
 }
 
-// Chart garis
-const ctx = document.getElementById("chart").getContext("2d");
-let chart = new Chart(ctx,{
-    type:"line",
-    data:{
-        labels:Object.keys(riwayat),
-        datasets:[{
-            label:"% Kehadiran",
-            data:Object.values(riwayat),
-            borderColor:"#007bff",
-            backgroundColor:"rgba(0,123,255,0.2)",
-            fill:true,
-            tension:0.4,
-            pointRadius:5
-        }]
-    },
-    options:{
-        responsive:true,
-        animation:{duration:1000},
-        scales:{y:{beginAtZero:true,max:100}}
-    }
+const chart=new Chart(document.getElementById("chart"),{
+type:"line",
+data:{labels:Object.keys(riwayat),
+datasets:[{label:"% Kehadiran",
+data:Object.values(riwayat),
+borderColor:"#007bff",
+backgroundColor:"rgba(0,123,255,0.2)",
+fill:true,tension:0.4}]},
+options:{responsive:true,scales:{y:{beginAtZero:true,max:100}}}
 });
 
 function updateChart(){
-    chart.data.labels = Object.keys(riwayat);
-    chart.data.datasets[0].data = Object.values(riwayat);
-    chart.update();
+chart.data.labels=Object.keys(riwayat);
+chart.data.datasets[0].data=Object.values(riwayat);
+chart.update();
 }
 
 function toggleDark(){
-    document.body.classList.toggle("dark");
+document.body.classList.toggle("dark");
 }
-
-updateChart();
 </script>
 
 </body>
