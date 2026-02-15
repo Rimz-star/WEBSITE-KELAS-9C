@@ -55,6 +55,11 @@ input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
 .tka{background:#ffb347}
 .senam{background:#ff6347;color:white}
 .istirahat{background:#ffd700}
+
+/* Jadwal responsive scroll di mobile */
+.jadwal-wrapper{overflow-x:auto;}
+.jadwal-wrapper table{min-width:700px;width:100%;}
+@media (min-width: 1024px){ .jadwal-wrapper table{min-width:0;} }
 </style>
 </head>
 
@@ -109,6 +114,7 @@ input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
 
 <section id="jadwal">
 <h2>Jadwal Pelajaran 07:00 - 13:40</h2>
+<div class="jadwal-wrapper">
 <table>
 <tr>
 <th>Hari</th>
@@ -169,6 +175,7 @@ input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
 <td colspan="3" class="istirahat">Ishoma</td>
 </tr>
 </table>
+</div>
 </section>
 
 <section id="kehadiran">
@@ -189,21 +196,24 @@ width="100%" height="350" style="border:0;border-radius:12px;" allowfullscreen="
 </footer>
 
 <script>
-let dataSiswa = JSON.parse(localStorage.getItem("dataSiswa")) || [];
+// Database siswa awal langsung di kode
+let dataSiswa = [
+  {nama:"Ahmad", jk:"L", absen:{}},
+  {nama:"Siti", jk:"P", absen:{}},
+  {nama:"Budi", jk:"L", absen:{}},
+  {nama:"Dewi", jk:"P", absen:{}},
+  {nama:"Tono", jk:"L", absen:{}}
+];
+
 let riwayat = JSON.parse(localStorage.getItem("riwayatAbsen")) || {};
 const today = new Date().toLocaleDateString();
 const tabel = document.getElementById("tabelSiswa");
 
-// Simpan localStorage
-function simpanDatabase(){
-  localStorage.setItem("dataSiswa",JSON.stringify(dataSiswa));
-}
+function simpanDatabase(){ localStorage.setItem("dataSiswa",JSON.stringify(dataSiswa)); }
 
-// Tampilkan daftar siswa dengan checkbox kehadiran hari ini
 function tampilkanSiswa(){
   tabel.innerHTML="";
   dataSiswa.forEach((siswa,index)=>{
-    // Cek kehadiran hari ini
     let hadirHariIni = siswa.absen?.[today] || false;
     tabel.innerHTML+=`
       <tr>
@@ -222,7 +232,6 @@ function tampilkanSiswa(){
   updateChart();
 }
 
-// Tambah siswa baru
 function tambahSiswa(){
   let nama=document.getElementById("namaBaru").value;
   let jk=document.getElementById("jkBaru").value;
@@ -233,43 +242,12 @@ function tambahSiswa(){
   document.getElementById("namaBaru").value="";
 }
 
-// Edit nama siswa
-function editNama(index,namaBaru){
-  dataSiswa[index].nama=namaBaru.trim();
-  simpanDatabase();
-}
+function editNama(index,namaBaru){ dataSiswa[index].nama=namaBaru.trim(); simpanDatabase(); }
+function editJK(index,jkBaru){ dataSiswa[index].jk=jkBaru; simpanDatabase(); }
+function hapusSiswa(index){ if(confirm("Yakin hapus siswa?")){ dataSiswa.splice(index,1); simpanDatabase(); tampilkanSiswa(); } }
+function toggleAbsen(index,checked){ if(!dataSiswa[index].absen) dataSiswa[index].absen={}; dataSiswa[index].absen[today]=checked; simpanDatabase(); updateChart(); }
+function hitungPersentase(){ if(dataSiswa.length===0) return 0; return ((dataSiswa.filter(s=>s.absen?.[today]).length/dataSiswa.length)*100).toFixed(1); }
 
-// Edit JK
-function editJK(index,jkBaru){
-  dataSiswa[index].jk=jkBaru;
-  simpanDatabase();
-}
-
-// Hapus siswa
-function hapusSiswa(index){
-  if(confirm("Yakin hapus siswa?")){
-    dataSiswa.splice(index,1);
-    simpanDatabase();
-    tampilkanSiswa();
-  }
-}
-
-// Toggle checkbox kehadiran
-function toggleAbsen(index,checked){
-  if(!dataSiswa[index].absen) dataSiswa[index].absen={};
-  dataSiswa[index].absen[today]=checked;
-  simpanDatabase();
-  updateChart();
-}
-
-// Hitung persentase kehadiran hari ini
-function hitungPersentase(){
-  if(dataSiswa.length===0) return 0;
-  let hadir = dataSiswa.filter(s=>s.absen?.[today]).length;
-  return ((hadir/dataSiswa.length)*100).toFixed(1);
-}
-
-// Chart kehadiran
 const chart=new Chart(document.getElementById("chart"),{
 type:"line",
 data:{
@@ -285,17 +263,7 @@ data:{
 options:{responsive:true,scales:{y:{beginAtZero:true,max:100}}}
 });
 
-// Update chart termasuk hari ini
-function updateChart(){
-  // Simpan persentase hari ini
-  riwayat[today] = hitungPersentase();
-  localStorage.setItem("riwayatAbsen",JSON.stringify(riwayat));
-  chart.data.labels = Object.keys(riwayat);
-  chart.data.datasets[0].data = Object.values(riwayat);
-  chart.update();
-}
-
-// Dark mode toggle
+function updateChart(){ riwayat[today]=hitungPersentase(); localStorage.setItem("riwayatAbsen",JSON.stringify(riwayat)); chart.data.labels=Object.keys(riwayat); chart.data.datasets[0].data=Object.values(riwayat); chart.update(); }
 function toggleDark(){ document.body.classList.toggle("dark"); }
 
 tampilkanSiswa();
