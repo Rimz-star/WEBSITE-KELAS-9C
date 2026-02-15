@@ -22,8 +22,22 @@ button{padding:6px 12px;border:none;border-radius:6px;background:#007bff;color:w
 button.delete{background:#dc3545}
 footer{background:#007bff;color:white;text-align:center;padding:15px;margin-top:20px}
 input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
-.gallery{display:flex;gap:10px;margin-top:10px}
-.gallery img{width:150px;height:150px;border-radius:8px;object-fit:cover}
+
+/* Galeri 16:9 responsive */
+.gallery {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.gallery img {
+  width: 32%;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  object-fit: cover;
+}
+@media (max-width: 768px) { .gallery img { width: 48%; } }
+@media (max-width: 480px) { .gallery img { width: 100%; } }
 
 /* Warna Jadwal */
 .upacara{background:#ff8c00;color:white}
@@ -64,15 +78,14 @@ input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
 <h2>Beranda</h2>
 <p>Selamat datang di Kelas 9C! Kami memiliki siswa aktif dan kreatif.</p>
 <div class="gallery">
-<img src="FILE%20FOTO/jumanji.JPG" alt="Foto 1">
-<img src="FILE%20FOTO/olahraga.jpg" alt="Foto 2">
-<img src="FILE%20FOTO/foto3.jpg" alt="Foto 3">
+  <img src="FILE%20FOTO/jumanji.JPG" alt="Foto 1">
+  <img src="FILE%20FOTO/olahraga.jpg" alt="Foto 2">
+  <img src="FILE%20FOTO/foto3.jpg" alt="Foto 3">
 </div>
 </section>
 
 <section id="siswa">
-<h2>Daftar Siswa (Editable)</h2>
-
+<h2>Daftar Siswa & Kehadiran Hari Ini</h2>
 <input type="text" id="namaBaru" placeholder="Nama siswa baru">
 <select id="jkBaru">
 <option value="L">Laki-laki</option>
@@ -86,6 +99,7 @@ input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
 <th>No</th>
 <th>Nama</th>
 <th>JK</th>
+<th>Hadir</th>
 <th>Aksi</th>
 </tr>
 </thead>
@@ -158,10 +172,8 @@ input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
 </section>
 
 <section id="kehadiran">
-<h2>Kehadiran</h2>
+<h2>Grafik Kehadiran</h2>
 <canvas id="chart"></canvas>
-<div id="absenList"></div>
-<button onclick="simpanAbsen()">Simpan Kehadiran</button>
 </section>
 
 <section id="kontak">
@@ -182,99 +194,109 @@ let riwayat = JSON.parse(localStorage.getItem("riwayatAbsen")) || {};
 const today = new Date().toLocaleDateString();
 const tabel = document.getElementById("tabelSiswa");
 
+// Simpan localStorage
 function simpanDatabase(){
-localStorage.setItem("dataSiswa",JSON.stringify(dataSiswa));
+  localStorage.setItem("dataSiswa",JSON.stringify(dataSiswa));
 }
 
+// Tampilkan daftar siswa dengan checkbox kehadiran hari ini
 function tampilkanSiswa(){
-tabel.innerHTML="";
-dataSiswa.forEach((siswa,index)=>{
-tabel.innerHTML+=`
-<tr>
-<td>${index+1}</td>
-<td contenteditable="true" onblur="editNama(${index},this.innerText)">
-${siswa.nama}</td>
-<td>
-<select onchange="editJK(${index},this.value)">
-<option value="L" ${siswa.jk==="L"?"selected":""}>L</option>
-<option value="P" ${siswa.jk==="P"?"selected":""}>P</option>
-</select>
-</td>
-<td><button class="delete" onclick="hapusSiswa(${index})">Hapus</button></td>
-</tr>`;
-});
-generateAbsen();
+  tabel.innerHTML="";
+  dataSiswa.forEach((siswa,index)=>{
+    // Cek kehadiran hari ini
+    let hadirHariIni = siswa.absen?.[today] || false;
+    tabel.innerHTML+=`
+      <tr>
+      <td>${index+1}</td>
+      <td contenteditable="true" onblur="editNama(${index},this.innerText)">${siswa.nama}</td>
+      <td>
+        <select onchange="editJK(${index},this.value)">
+          <option value="L" ${siswa.jk==="L"?"selected":""}>L</option>
+          <option value="P" ${siswa.jk==="P"?"selected":""}>P</option>
+        </select>
+      </td>
+      <td><input type="checkbox" onchange="toggleAbsen(${index},this.checked)" ${hadirHariIni?'checked':''}></td>
+      <td><button class="delete" onclick="hapusSiswa(${index})">Hapus</button></td>
+      </tr>`;
+  });
+  updateChart();
 }
 
+// Tambah siswa baru
 function tambahSiswa(){
-let nama=document.getElementById("namaBaru").value;
-let jk=document.getElementById("jkBaru").value;
-if(nama==="") return alert("Isi nama dulu!");
-dataSiswa.push({nama,jk});
-simpanDatabase();
-tampilkanSiswa();
-document.getElementById("namaBaru").value="";
+  let nama=document.getElementById("namaBaru").value;
+  let jk=document.getElementById("jkBaru").value;
+  if(nama==="") return alert("Isi nama dulu!");
+  dataSiswa.push({nama,jk,absen:{}});
+  simpanDatabase();
+  tampilkanSiswa();
+  document.getElementById("namaBaru").value="";
 }
 
+// Edit nama siswa
 function editNama(index,namaBaru){
-dataSiswa[index].nama=namaBaru.trim();
-simpanDatabase();
+  dataSiswa[index].nama=namaBaru.trim();
+  simpanDatabase();
 }
 
+// Edit JK
 function editJK(index,jkBaru){
-dataSiswa[index].jk=jkBaru;
-simpanDatabase();
+  dataSiswa[index].jk=jkBaru;
+  simpanDatabase();
 }
 
+// Hapus siswa
 function hapusSiswa(index){
-if(confirm("Yakin hapus siswa?")){
-dataSiswa.splice(index,1);
-simpanDatabase();
-tampilkanSiswa();
-}
-}
-
-function generateAbsen(){
-const absenList=document.getElementById("absenList");
-absenList.innerHTML="";
-dataSiswa.forEach((siswa)=>{
-absenList.innerHTML+=`<label><input type="checkbox" class="absen"> ${siswa.nama}</label><br>`;
-});
+  if(confirm("Yakin hapus siswa?")){
+    dataSiswa.splice(index,1);
+    simpanDatabase();
+    tampilkanSiswa();
+  }
 }
 
-function simpanAbsen(){
-if(dataSiswa.length===0) return alert("Belum ada siswa!");
-let hadir=document.querySelectorAll(".absen:checked").length;
-let persen=((hadir/dataSiswa.length)*100).toFixed(1);
-riwayat[today]=persen;
-localStorage.setItem("riwayatAbsen",JSON.stringify(riwayat));
-updateChart();
+// Toggle checkbox kehadiran
+function toggleAbsen(index,checked){
+  if(!dataSiswa[index].absen) dataSiswa[index].absen={};
+  dataSiswa[index].absen[today]=checked;
+  simpanDatabase();
+  updateChart();
 }
 
+// Hitung persentase kehadiran hari ini
+function hitungPersentase(){
+  if(dataSiswa.length===0) return 0;
+  let hadir = dataSiswa.filter(s=>s.absen?.[today]).length;
+  return ((hadir/dataSiswa.length)*100).toFixed(1);
+}
+
+// Chart kehadiran
 const chart=new Chart(document.getElementById("chart"),{
 type:"line",
 data:{
-labels:Object.keys(riwayat),
-datasets:[{
-label:"% Kehadiran",
-data:Object.values(riwayat),
-borderColor:"#007bff",
-backgroundColor:"rgba(0,123,255,0.2)",
-fill:true
-}]
+  labels:Object.keys(riwayat),
+  datasets:[{
+    label:"% Kehadiran",
+    data:Object.values(riwayat),
+    borderColor:"#007bff",
+    backgroundColor:"rgba(0,123,255,0.2)",
+    fill:true
+  }]
 },
 options:{responsive:true,scales:{y:{beginAtZero:true,max:100}}}
 });
 
+// Update chart termasuk hari ini
 function updateChart(){
-chart.data.labels=Object.keys(riwayat);
-chart.data.datasets[0].data=Object.values(riwayat);
-chart.update();
+  // Simpan persentase hari ini
+  riwayat[today] = hitungPersentase();
+  localStorage.setItem("riwayatAbsen",JSON.stringify(riwayat));
+  chart.data.labels = Object.keys(riwayat);
+  chart.data.datasets[0].data = Object.values(riwayat);
+  chart.update();
 }
 
-function toggleDark(){
-document.body.classList.toggle("dark");
-}
+// Dark mode toggle
+function toggleDark(){ document.body.classList.toggle("dark"); }
 
 tampilkanSiswa();
 </script>
