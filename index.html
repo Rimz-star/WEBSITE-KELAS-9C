@@ -456,7 +456,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-const today = new Date().toLocaleDateString();
+const _now = new Date();
+const today = `${String(_now.getDate()).padStart(2,"0")}/${String(_now.getMonth()+1).padStart(2,"0")}/${_now.getFullYear()}`;
 const tabel = document.getElementById("tabelSiswa");
 let dataSiswa = [];
 let searchQuery = "";
@@ -617,8 +618,27 @@ function updateChart() {
   grafikRef.once('value', snap => {
     const labels = [];
     const data = [];
+    const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+    const namaHari = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
     snap.forEach(dateSnap => {
-      labels.push(dateSnap.key);
+      const raw = dateSnap.key;
+      const parts = raw.split("/");
+      let dateObj;
+      if (parts.length === 3) {
+        // format DD/MM/YYYY
+        dateObj = new Date(parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]));
+      } else {
+        dateObj = new Date(raw);
+      }
+      let label = raw;
+      if (!isNaN(dateObj.getTime())) {
+        const hari = namaHari[dateObj.getDay()];
+        const tgl = dateObj.getDate();
+        const bln = namaBulan[dateObj.getMonth()];
+        const thn = dateObj.getFullYear();
+        label = `${hari}, ${tgl} ${bln} ${thn}`;
+      }
+      labels.push(label);
       let jml = 0;
       dateSnap.forEach(snapSiswa => { if (snapSiswa.val()) jml++; });
       const persen = dataSiswa.length ? ((jml / dataSiswa.length) * 100).toFixed(1) : 0;
