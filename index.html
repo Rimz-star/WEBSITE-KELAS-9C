@@ -456,8 +456,24 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-const _now = new Date();
-const today = `${String(_now.getDate()).padStart(2,"0")}/${String(_now.getMonth()+1).padStart(2,"0")}/${_now.getFullYear()}`;
+function getToday() {
+  const d = new Date();
+  return `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}/${d.getFullYear()}`;
+}
+let today = getToday();
+
+// Auto update tanggal setiap jam 00:00
+function jadwalkanUpdate() {
+  const sekarang = new Date();
+  const besok = new Date(sekarang.getFullYear(), sekarang.getMonth(), sekarang.getDate()+1, 0, 0, 0);
+  const selisih = besok - sekarang;
+  setTimeout(() => {
+    today = getToday();
+    tampilkanSiswa();
+    jadwalkanUpdate();
+  }, selisih);
+}
+jadwalkanUpdate();
 const tabel = document.getElementById("tabelSiswa");
 let dataSiswa = [];
 let searchQuery = "";
@@ -644,55 +660,80 @@ function updateChart() {
       const persen = dataSiswa.length ? ((jml / dataSiswa.length) * 100).toFixed(1) : 0;
       data.push(persen);
     });
-    if (!chart) {
-      chart = new Chart(document.getElementById("chart"), {
-        type: "line",
-        data: {
-          labels,
-          datasets: [{
-            label: "% Siswa Tidak Masuk per Hari",
-            data,
-            borderColor: "#dc3545",
-            backgroundColor: "rgba(220,53,69,0.12)",
-            fill: true,
-            tension: 0,
-            pointBackgroundColor: "#dc3545",
-            pointBorderColor: "#fff",
-            pointBorderWidth: 2,
-            pointRadius: 7,
-            pointHoverRadius: 10,
-            pointStyle: "circle"
-          }]
-        },
-        options: {
-          responsive: true,
-          interaction: { mode: "index", intersect: false },
-          plugins: {
-            legend: { labels: { font: { family: 'Poppins', size: 13 } } },
-            tooltip: {
-              callbacks: {
-                title: ctx => "📅 " + ctx[0].label,
-                label: ctx => " Tidak masuk: " + ctx.raw + "%"
-              }
-            }
-          },
-          scales: {
-            x: {
-              title: { display: true, text: "Tanggal", font: { family: 'Poppins', size: 12 } },
-              ticks: { font: { family: 'Poppins', size: 11 } }
-            },
-            y: {
-              beginAtZero: true,
-              max: 100,
-              title: { display: true, text: "% Tidak Masuk", font: { family: 'Poppins', size: 12 } },
-              ticks: { font: { family: 'Poppins', size: 11 }, callback: v => v + "%" }
+    // Dataset utama: garis hanya sampai hari terakhir yang ada data
+    // Titik akhir (hari realtime/hari ini) ditandai titik menonjol
+    const todayLabel = (() => {
+      const d = new Date();
+      const namaHari2 = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+      const namaBulan2 = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+      return namaHari2[d.getDay()] + ", " + d.getDate() + " " + namaBulan2[d.getMonth()] + " " + d.getFullYear();
+    })();
+
+    // Tambah label hari ini jika belum ada
+    if (!labels.includes(todayLabel)) {
+      labels.push(todayLabel);
+      data.push(null); // null = tidak ada garis, hanya titik penanda
+    }
+
+    // Warna titik: merah semua, titik terakhir (hari ini) lebih besar & berbeda
+    const pointColors = labels.map((l, i) => i === labels.length - 1 ? "#ff4757" : "#dc3545");
+    const pointSizes  = labels.map((l, i) => i === labels.length - 1 ? 10 : 6);
+    const pointBorders = labels.map((l, i) => i === labels.length - 1 ? "#fff" : "#fff");
+
+    const chartConfig = {
+      type: "line",
+      data: {
+        labels,
+        datasets: [{
+          label: "% Siswa Tidak Masuk per Hari",
+          data,
+          borderColor: "#dc3545",
+          backgroundColor: "rgba(220,53,69,0.10)",
+          fill: true,
+          tension: 0,
+          spanGaps: false,
+          pointBackgroundColor: pointColors,
+          pointBorderColor: pointBorders,
+          pointBorderWidth: 2.5,
+          pointRadius: pointSizes,
+          pointHoverRadius: 12,
+          pointStyle: "circle"
+        }]
+      },
+      options: {
+        responsive: true,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { labels: { font: { family: 'Poppins', size: 13 } } },
+          tooltip: {
+            callbacks: {
+              title: ctx => "📅 " + ctx[0].label,
+              label: ctx => ctx.raw !== null ? " Tidak masuk: " + ctx.raw + "%" : " Hari ini (belum ada data)"
             }
           }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: "Tanggal", font: { family: 'Poppins', size: 12 } },
+            ticks: { font: { family: 'Poppins', size: 11 }, maxRotation: 30, minRotation: 0 }
+          },
+          y: {
+            beginAtZero: true,
+            max: 100,
+            title: { display: true, text: "% Tidak Masuk", font: { family: 'Poppins', size: 12 } },
+            ticks: { font: { family: 'Poppins', size: 11 }, callback: v => v + "%" }
+          }
         }
-      });
+      }
+    };
+
+    if (!chart) {
+      chart = new Chart(document.getElementById("chart"), chartConfig);
     } else {
       chart.data.labels = labels;
       chart.data.datasets[0].data = data;
+      chart.data.datasets[0].pointBackgroundColor = pointColors;
+      chart.data.datasets[0].pointRadius = pointSizes;
       chart.update();
     }
   });
