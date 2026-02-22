@@ -4,30 +4,288 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Website Kelas 9C</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
-body{background:#f4f4f4;transition:.4s}
-body.dark{background:#121212;color:white}
-header{background:#007bff;color:white;padding:20px;text-align:center;position:relative}
-nav{background:#0056b3;padding:10px;text-align:center}
-nav a{color:white;margin:0 15px;text-decoration:none;font-weight:bold}
-section{padding:25px;margin:20px;background:white;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
-body.dark section{background:#1e1e1e}
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{border:1px solid #ddd;padding:8px;text-align:center;font-size:12px}
-th{background:#007bff;color:white}
-button{padding:6px 12px;border:none;border-radius:6px;background:#007bff;color:white;cursor:pointer}
-button.delete{background:#dc3545}
-footer{background:#007bff;color:white;text-align:center;padding:15px;margin-top:20px}
-input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
-.gallery { display: flex; gap:10px; margin-top:10px; flex-wrap:wrap;}
-.gallery img{width:32%;aspect-ratio:16/9;border-radius:8px;object-fit:cover;}
-@media(max-width:768px){.gallery img{width:48%;}}
-@media(max-width:480px){.gallery img{width:100%;}}
+:root {
+  --primary: #007bff;
+  --primary-dark: #0056b3;
+  --danger: #dc3545;
+  --bg: #f0f4f8;
+  --card: #ffffff;
+  --text: #222;
+  --text-muted: #666;
+  --border: #ddd;
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --radius: 14px;
+  --transition: 0.3s ease;
+}
+body.dark {
+  --primary: #4da3ff;
+  --primary-dark: #1a6fc4;
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --text: #e8eaf0;
+  --text-muted: #9095a5;
+  --border: #2d3040;
+  --shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background var(--transition), color var(--transition);
+  animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== HEADER ===== */
+header {
+  background: linear-gradient(135deg, #007bff 0%, #0043a8 100%);
+  color: white;
+  padding: 30px 20px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -20%;
+  width: 140%; height: 200%;
+  background: radial-gradient(ellipse at 60% 40%, rgba(255,255,255,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: 0.5px; }
+header p { font-size: 0.95rem; opacity: 0.88; margin-top: 4px; }
+
+#darkModeBtn {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: rgba(255,255,255,0.2);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  color: white;
+  padding: 7px 14px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-family: 'Poppins', sans-serif;
+  transition: background var(--transition);
+  backdrop-filter: blur(6px);
+}
+#darkModeBtn:hover { background: rgba(255,255,255,0.35); }
+
+/* ===== NAVBAR ===== */
+nav {
+  background: var(--primary-dark);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  transition: background var(--transition);
+}
+.nav-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0 16px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+nav a {
+  color: rgba(255,255,255,0.85);
+  padding: 14px 18px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 0.3px;
+  display: inline-block;
+  position: relative;
+  transition: color var(--transition);
+}
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 8px; left: 18px; right: 18px;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+  transform: scaleX(0);
+  transition: transform var(--transition);
+}
+nav a:hover { color: white; }
+nav a:hover::after,
+nav a.active::after { transform: scaleX(1); }
+nav a.active { color: white; }
+
+/* Hamburger */
+#hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 14px;
+  margin-left: auto;
+}
+#hamburger span {
+  display: block; width: 24px; height: 2.5px;
+  background: white; border-radius: 2px;
+  transition: var(--transition);
+}
+#navLinks { display: flex; flex-wrap: wrap; }
+
+@media (max-width: 600px) {
+  #hamburger { display: flex; }
+  #navLinks {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: var(--primary-dark);
+  }
+  #navLinks.open { display: flex; }
+  nav a { padding: 12px 20px; border-top: 1px solid rgba(255,255,255,0.08); width: 100%; }
+  nav a::after { display: none; }
+  .nav-inner { flex-wrap: wrap; padding: 0; }
+}
+
+/* ===== SECTION ===== */
+section {
+  padding: 28px;
+  margin: 24px 20px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: background var(--transition), box-shadow var(--transition);
+  animation: fadeIn 0.5s ease;
+}
+section h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+
+/* ===== BERANDA ===== */
+#beranda p { color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; }
+.gallery { display: flex; gap: 10px; flex-wrap: wrap; }
+.gallery img {
+  width: 32%; aspect-ratio: 16/9;
+  border-radius: 10px; object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.gallery img:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+@media (max-width: 768px) { .gallery img { width: 48%; } }
+@media (max-width: 480px) { .gallery img { width: 100%; } }
+
+/* Lightbox */
+#lightbox {
+  display: none; position: fixed;
+  inset: 0; background: rgba(0,0,0,0.88);
+  z-index: 9999; justify-content: center; align-items: center;
+}
+#lightbox.active { display: flex; }
+#lightbox img {
+  max-width: 90vw; max-height: 85vh;
+  border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  animation: fadeIn 0.2s ease;
+}
+#lightbox-close {
+  position: absolute; top: 18px; right: 24px;
+  color: white; font-size: 2rem; cursor: pointer;
+  line-height: 1; background: none; border: none;
+}
+
+/* ===== SISWA ===== */
+.siswa-controls {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 14px; align-items: center;
+}
+.siswa-controls input[type="text"],
+.siswa-controls select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  transition: border var(--transition);
+}
+.siswa-controls input[type="text"]:focus,
+.siswa-controls select:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+.siswa-controls input[type="text"] { flex: 1; min-width: 140px; }
+
+#searchSiswa {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  width: 100%;
+  margin-bottom: 10px;
+  transition: border var(--transition);
+}
+#searchSiswa:focus { border-color: var(--primary); outline: none; }
+
+table { width: 100%; border-collapse: collapse; margin-top: 4px; font-size: 0.83rem; }
+th, td { border: 1px solid var(--border); padding: 9px 8px; text-align: center; transition: background var(--transition); }
+th { background: var(--primary); color: white; font-weight: 600; }
+tbody tr:hover { background: rgba(0,123,255,0.05); }
+
+button {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary);
+  color: white;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.15s;
+}
+button:hover { background: var(--primary-dark); transform: translateY(-1px); }
+button:active { transform: translateY(0); }
+button.delete { background: var(--danger); }
+button.delete:hover { background: #b02030; }
+button.success { background: #28a745; }
+button.success:hover { background: #1e7e34; }
+
+.btn-export {
+  background: #17a2b8; margin-left: auto;
+}
+.btn-export:hover { background: #117a8b; }
+
+/* ===== JADWAL ===== */
+.jadwal-wrapper { overflow-x: auto; }
+.jadwal-wrapper table { min-width: 700px; width: 100%; font-size: 0.78rem; }
+@media (min-width: 1024px) { .jadwal-wrapper table { min-width: 0; } }
+.jadwal-scroll-hint {
+  display: none;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-align: center;
+}
+@media (max-width: 768px) { .jadwal-scroll-hint { display: block; } }
+
 .upacara{background:#ff8c00;color:white}
+.Olahraga{background:#a8d8a8}
 .mat1{background:#ff9999}
 .mat2{background:#99ccff}
 .mat3{background:#99ff99}
@@ -42,106 +300,149 @@ input,select{padding:6px;border-radius:6px;border:1px solid #ccc}
 .tka{background:#ffb347}
 .senam{background:#ff6347;color:white}
 .istirahat{background:#ffd700}
-.jadwal-wrapper{overflow-x:auto;}
-.jadwal-wrapper table{min-width:700px;width:100%;}
-@media(min-width:1024px){.jadwal-wrapper table{min-width:0;}}
+
+/* ===== CHART ===== */
+#chart { max-height: 320px; }
+
+/* ===== KONTAK ===== */
+#kontak iframe { border-radius: 12px; }
+
+/* ===== FOOTER ===== */
+footer {
+  background: linear-gradient(135deg, #007bff, #0043a8);
+  color: white;
+  text-align: center;
+  padding: 18px;
+  margin-top: 10px;
+  font-size: 0.88rem;
+  opacity: 0.95;
+}
+
+/* ===== SELECT IN TABLE ===== */
+td select {
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+}
 </style>
 </head>
 <body>
 
 <header>
-<h1>Website Kelas 9C 2025/2026</h1>
-<p>SMP NEGRI 1 KEBASEN</p>
-<button id="darkModeBtn" style="position:absolute;top:20px;right:20px;z-index:10;">Dark Mode🌛</button>
+  <h1>Website Kelas 9C 2025/2026</h1>
+  <p>SMP NEGERI 1 KEBASEN</p>
+  <button id="darkModeBtn">🌛 Dark Mode</button>
 </header>
 
 <nav>
-<a href="#beranda">Beranda</a>
-<a href="#siswa">Siswa</a>
-<a href="#jadwal">Jadwal</a>
-<a href="#kehadiran">Kehadiran</a>
-<a href="#kontak">Kontak</a>
+  <div class="nav-inner">
+    <div id="hamburger" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+    <div id="navLinks">
+      <a href="#beranda">Beranda</a>
+      <a href="#siswa">Siswa</a>
+      <a href="#jadwal">Jadwal</a>
+      <a href="#kehadiran">Kehadiran</a>
+      <a href="#kontak">Kontak</a>
+    </div>
+  </div>
 </nav>
 
 <section id="beranda">
-<h2>Beranda</h2>
-<p>Selamat datang di Kelas 9C! Kami memiliki siswa aktif,kreatif serta berbakat.</p>
-<div class="gallery">
-  <img src="FILE FOTO/jumanji.JPG" alt="Foto 1">
-  <img src="FILE FOTO/olahraga.jpg" alt="Foto 2">
-  <img src="FILE FOTO/jumanji2.jpg" alt="Foto 3">
-</div>
+  <h2>🏠 Beranda</h2>
+  <p>Selamat datang di Kelas 9C! Kami memiliki siswa aktif, kreatif serta berbakat.</p>
+  <div class="gallery">
+    <img src="FILE FOTO/jumanji.JPG" alt="Foto 1" onclick="openLightbox(this.src)">
+    <img src="FILE FOTO/olahraga.jpg" alt="Foto 2" onclick="openLightbox(this.src)">
+    <img src="FILE FOTO/jumanji2.jpg" alt="Foto 3" onclick="openLightbox(this.src)">
+  </div>
 </section>
 
-<section id="siswa">
-<h2>Daftar Siswa & Siswa Tidak Masuk</h2>
-<input type="text" id="namaBaru" placeholder="Nama siswa baru">
-<select id="jkBaru">
-<option value="L">Laki-laki</option>
-<option value="P">Perempuan</option>
-</select>
-<button onclick="tambahSiswa()">Tambah</button>
-<button onclick="simpanTidakMasuk()">Simpan yang Tidak Masuk</button>
+<!-- Lightbox -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="Preview">
+</div>
 
-<table>
-<thead>
-<tr>
-<th>No</th>
-<th>Nama</th>
-<th>JK</th>
-<th>Tidak Masuk</th>
-<th>Aksi</th>
-</tr>
-</thead>
-<tbody id="tabelSiswa"></tbody>
-</table>
+<section id="siswa">
+  <h2>👥 Daftar Siswa & Siswa Tidak Masuk</h2>
+  <input type="text" id="searchSiswa" placeholder="🔍 Cari nama siswa..." oninput="filterSiswa()">
+  <div class="siswa-controls">
+    <input type="text" id="namaBaru" placeholder="Nama siswa baru">
+    <select id="jkBaru">
+      <option value="L">Laki-laki</option>
+      <option value="P">Perempuan</option>
+    </select>
+    <button onclick="tambahSiswa()">+ Tambah</button>
+    <button class="success" onclick="simpanTidakMasuk()">💾 Simpan Kehadiran</button>
+    <button class="btn-export" onclick="exportPDF()">📄 Export PDF</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>JK</th>
+        <th>Tidak Masuk</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="tabelSiswa"></tbody>
+  </table>
 </section>
 
 <section id="jadwal">
-<h2>Jadwal Pelajaran Kelas 9C Dari 07:00 - 13:40</h2>
-<div class="jadwal-wrapper">
-<table>
-<tr>
-<th>Hari</th><th>07:00</th><th>07.30</th><th>08.00</th><th>08.30</th><th>09.00</th><th>09.30</th><th>10.00</th></th><th>10.30</th><th>11.00</th><th>11.30</th><th>12.00</th><th>12.30</th><th>13.00</th><th>13.40</th>
-</tr>
-<tr>
-<td>Senin</td><td class="upacara" colspan="3">Upacara</td><td class="Olahraga">Olahraga</td><td class="mat5">Istirahat</td><td class="Olahraga">Olahraga</td><td class="mat5">Ppkn</td><td class="mat5" colspan="2">Ipa</td><td class="istirahat" colspan="2">Ishoma</td><td class="mat5" colspan="3">Ipa</td>
-</tr>
-<tr>
-<td>Selasa</td><td class="mat2" colspan="3">Seni Tari</td><td class="ips">IPS</td><td class="mat5">istirahat</td><td class="ips">IPS</td><td class="pa" colspan="3">PAI</td><td class="istirahat" colspan="2">Ishoma</td><td class="binggris" colspan="3">B inggris</td>
-</tr>
-<tr>
-<td>Rabu</td><td class="tka" colspan="3">TKA</td><td class="mat3">Matematika</td><td class="mat5">Istirahat</td><td class="mat3">Matematika</td><td class="bindo" colspan="3">B.Indonesia</td><td class="istirahat" colspan="2">Ishoma</td><td class="bindo" colspan="3">B.indonesia</td>
-</tr>
-<tr>
-<td>Kamis</td><td class="mat4" colspan="3">B.Jawa</td><td class="mat5">IPA</td><td class="mat5">Istirahat</td><td class="ips">IPS</td><td class="bindo" colspan="3">B.indonesia</td><td class="istirahat" colspan="2">Ishoma</td><td class="mat3" colspan="3">Matematika</td>
-</tr>
-<tr>
-<td>Jumat</td><td class="senam" colspan="3">Senam</td><td class="mat6" colspan="2">Informatika</td><td class="binggris">B.Inggris</td><td class="mat5">Istirahat</td><td class="tka" colspan="2">TKA</td><td colspan="6" class="istirahat">Ishoma</td>
-</tr>
-</table>
-</div>
+  <h2>📅 Jadwal Pelajaran Kelas 9C (07:00 - 13:40)</h2>
+  <p class="jadwal-scroll-hint">👈 Geser ke kanan untuk melihat jadwal lengkap</p>
+  <div class="jadwal-wrapper">
+    <table>
+      <tr>
+        <th>Hari</th><th>07:00</th><th>07:30</th><th>08:00</th><th>08:30</th><th>09:00</th><th>09:30</th><th>10:00</th><th>10:30</th><th>11:00</th><th>11:30</th><th>12:00</th><th>12:30</th><th>13:00</th><th>13:40</th>
+      </tr>
+      <tr>
+        <td><strong>Senin</strong></td><td class="upacara" colspan="3">Upacara</td><td class="Olahraga">Olahraga</td><td class="istirahat">Istirahat</td><td class="Olahraga">Olahraga</td><td class="ppkn">PPKN</td><td class="mat5" colspan="2">IPA</td><td class="istirahat" colspan="2">Ishoma</td><td class="mat5" colspan="3">IPA</td>
+      </tr>
+      <tr>
+        <td><strong>Selasa</strong></td><td class="mat2" colspan="3">Seni Tari</td><td class="ips">IPS</td><td class="istirahat">Istirahat</td><td class="ips">IPS</td><td class="pa" colspan="3">PAI</td><td class="istirahat" colspan="2">Ishoma</td><td class="binggris" colspan="3">B. Inggris</td>
+      </tr>
+      <tr>
+        <td><strong>Rabu</strong></td><td class="tka" colspan="3">TKA</td><td class="mat3">Matematika</td><td class="istirahat">Istirahat</td><td class="mat3">Matematika</td><td class="bindo" colspan="3">B. Indonesia</td><td class="istirahat" colspan="2">Ishoma</td><td class="bindo" colspan="3">B. Indonesia</td>
+      </tr>
+      <tr>
+        <td><strong>Kamis</strong></td><td class="mat4" colspan="3">B. Jawa</td><td class="mat5">IPA</td><td class="istirahat">Istirahat</td><td class="ips">IPS</td><td class="bindo" colspan="3">B. Indonesia</td><td class="istirahat" colspan="2">Ishoma</td><td class="mat3" colspan="3">Matematika</td>
+      </tr>
+      <tr>
+        <td><strong>Jumat</strong></td><td class="senam" colspan="3">Senam</td><td class="mat6" colspan="2">Informatika</td><td class="binggris">B. Inggris</td><td class="istirahat">Istirahat</td><td class="tka" colspan="2">TKA</td><td colspan="6" class="istirahat">Ishoma</td>
+      </tr>
+    </table>
+  </div>
 </section>
 
 <section id="kehadiran">
-<h2>Grafik Siswa Tidak Masuk</h2>
-<canvas id="chart"></canvas>
+  <h2>📊 Grafik Siswa Tidak Masuk</h2>
+  <canvas id="chart"></canvas>
 </section>
 
 <section id="kontak">
-<h2>Lokasi Sekolah (Street View)</h2>
-<iframe 
-src="https://www.google.com/maps/embed?pb=!4v1771056824645!6m8!1m7!1stXaGA0T9dO-RDRYPpPtCyw!2m2!1d-7.543791611521065!2d109.2148921992591!3f188.93249147118826!4f-8.199027963207442!5f0.7820865974627469"
-width="100%" height="350" style="border:0;border-radius:12px;" allowfullscreen="" loading="lazy">
-</iframe>
+  <h2>📍 Lokasi Sekolah (Street View)</h2>
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!4v1771056824645!6m8!1m7!1stXaGA0T9dO-RDRYPpPtCyw!2m2!1d-7.543791611521065!2d109.2148921992591!3f188.93249147118826!4f-8.199027963207442!5f0.7820865974627469"
+    width="100%" height="350" style="border:0;border-radius:12px;" allowfullscreen="" loading="lazy">
+  </iframe>
 </section>
 
 <footer>
-&copy; 2026 Website Kelas 9C 2025/2026
+  &copy; 2026 Website Kelas 9C 2025/2026 &mdash; SMP Negeri 1 Kebasen
 </footer>
 
 <script>
-// Firebase
+// ===== FIREBASE =====
 const firebaseConfig = {
   apiKey: "AIzaSyAm3_vVK3NwBTcAaa4FLTg7bBb6W12GLQo",
   authDomain: "kelas9crhonix.firebaseapp.com",
@@ -157,104 +458,193 @@ const db = firebase.database();
 
 const today = new Date().toLocaleDateString();
 const tabel = document.getElementById("tabelSiswa");
-
 let dataSiswa = [];
+let searchQuery = "";
 
-// Ambil data siswa dari Firebase saat load
+// ===== LOAD DATA =====
 db.ref('dataSiswa').once('value', snap => {
-  if(snap.exists()){
+  if (snap.exists()) {
     dataSiswa = snap.val();
   } else {
-    // Data default jika belum ada
     dataSiswa = [
-      {nama:"Andi",jk:"L"},{nama:"Budi",jk:"L"},{nama:"Citra",jk:"P"},{nama:"Dewi",jk:"P"}
+      {nama:"Abdul Rokhim Karim",jk:"L"},
+      {nama:"Acasio Abimanyu J",jk:"L"},
+      {nama:"Afid Dwi Ramadhan",jk:"L"},
+      {nama:"Akhwalus Sabngiatul Karima",jk:"L"},
+      {nama:"Aktzar Milian Pamuji",jk:"L"},
+      {nama:"Alvira Indriyani",jk:"L"},
+      {nama:"Alya Putri Maylani",jk:"L"},
+      {nama:"Amel Nur Azizah",jk:"L"},
+      {nama:"Asyifa Khaira Kholqilah",jk:"L"},
+      {nama:"Atin Faizal Tahir",jk:"L"},
+      {nama:"Ayang Arinda Putripuan",jk:"L"},
+      {nama:"Bagus Dan Dava",jk:"L"},
+      {nama:"Damar Dwiki Wismoyo",jk:"L"},
+      {nama:"Dimas Anugrah Alfarezki",jk:"L"},
+      {nama:"Fardan Hendri",jk:"L"},
+      {nama:"Fryza Bagus Athaya",jk:"L"},
+      {nama:"Ill Yushin Yahya Zulkarnain",jk:"L"},
+      {nama:"Khansa Nathania Zahra",jk:"L"},
+      {nama:"Khesya Citranaysila",jk:"L"},
+      {nama:"Luqman",jk:"L"},
+      {nama:"Naufal Khairul Anam",jk:"L"},
+      {nama:"Noval Mahesa",jk:"L"},
+      {nama:"Reza Dwi Saputra",jk:"L"},
+      {nama:"Rizky Ramadhan",jk:"L"},
+      {nama:"Selly Elysiawati",jk:"L"},
+      {nama:"Syahendra Pangestu",jk:"L"},
+      {nama:"Titis Andriyana",jk:"L"},
+      {nama:"Vanessa Lathifia Azahra",jk:"L"},
+      {nama:"Verdi Aryanto",jk:"L"},
+      {nama:"Widia Nur Afifah",jk:"L"},
+      {nama:"Wisnu Saghrul Gunawan",jk:"L"},
+      {nama:"Zeta Nurrianti",jk:"L"},
+      {nama:"Zidan Muzaki",jk:"L"}
     ];
     db.ref('dataSiswa').set(dataSiswa);
   }
   tampilkanSiswa();
 });
 
-function tampilkanSiswa(){
-  tabel.innerHTML="";
-  dataSiswa.forEach((s,index)=>{
-    db.ref(`tidakMasuk/${today}/${index}`).once('value',snap=>{
+// ===== TAMPILKAN SISWA =====
+function tampilkanSiswa() {
+  tabel.innerHTML = "";
+  const q = searchQuery.toLowerCase();
+  const promises = dataSiswa.map((s, index) =>
+    db.ref(`tidakMasuk/${today}/${index}`).once('value').then(snap => ({ index, snap }))
+  );
+  Promise.all(promises).then(results => {
+    results.forEach(({ index, snap }) => {
+      const s = dataSiswa[index];
+      if (q && !s.nama.toLowerCase().includes(q)) return;
       const checked = snap.val() ? "checked" : "";
-      tabel.innerHTML+=`
+      const initials = s.nama.split(" ").map(w=>w[0]).join("").toUpperCase().slice(0,2);
+      const colors = ["#007bff","#28a745","#dc3545","#fd7e14","#6f42c1","#17a2b8"];
+      const color = colors[index % colors.length];
+      tabel.innerHTML += `
       <tr>
-      <td>${index+1}</td>
-      <td contenteditable="true" onblur="editNama(${index},this.innerText)">${dataSiswa[index].nama}</td>
-      <td>
-        <select onchange="editJK(${index},this.value)">
-          <option value="L" ${dataSiswa[index].jk==="L"?"selected":""}>L</option>
-          <option value="P" ${dataSiswa[index].jk==="P"?"selected":""}>P</option>
-        </select>
-      </td>
-      <td><input type="checkbox" id="chk${index}" ${checked}></td>
-      <td><button class="delete" onclick="hapusSiswa(${index})">Hapus</button></td>
+        <td>${index+1}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:8px;justify-content:center;">
+            <div style="width:28px;height:28px;border-radius:50%;background:${color};color:white;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0;">${initials}</div>
+            <span contenteditable="true" onblur="editNama(${index},this.innerText)" style="outline:none;border-bottom:1px dashed transparent;cursor:text;" onfocus="this.style.borderBottomColor='var(--primary)'" onblur2="this.style.borderBottomColor='transparent'">${s.nama}</span>
+          </div>
+        </td>
+        <td>
+          <select onchange="editJK(${index},this.value)">
+            <option value="L" ${s.jk==="L"?"selected":""}>L</option>
+            <option value="P" ${s.jk==="P"?"selected":""}>P</option>
+          </select>
+        </td>
+        <td><input type="checkbox" id="chk${index}" ${checked} style="width:16px;height:16px;cursor:pointer;"></td>
+        <td><button class="delete" onclick="hapusSiswa(${index})">Hapus</button></td>
       </tr>`;
     });
+    setTimeout(updateChart, 500);
   });
-  setTimeout(updateChart,500);
 }
 
-function tambahSiswa(){
-  let nama=document.getElementById("namaBaru").value;
-  let jk=document.getElementById("jkBaru").value;
-  if(!nama) return alert("Isi nama dulu!");
-  dataSiswa.push({nama,jk});
-  db.ref('dataSiswa').set(dataSiswa); // simpan ke Firebase
+// ===== FILTER SISWA =====
+function filterSiswa() {
+  searchQuery = document.getElementById("searchSiswa").value;
   tampilkanSiswa();
-  document.getElementById("namaBaru").value="";
 }
 
-function editNama(i,val){
-  dataSiswa[i].nama=val.trim();
-  db.ref('dataSiswa').set(dataSiswa); // update Firebase
+// ===== TAMBAH SISWA =====
+function tambahSiswa() {
+  const nama = document.getElementById("namaBaru").value.trim();
+  const jk = document.getElementById("jkBaru").value;
+  if (!nama) return alert("Isi nama dulu!");
+  if (nama.length > 50) return alert("Nama terlalu panjang!");
+  if (!/^[a-zA-Z\s'.]+$/.test(nama)) return alert("Nama hanya boleh huruf dan spasi!");
+  dataSiswa.push({ nama, jk });
+  db.ref('dataSiswa').set(dataSiswa);
+  tampilkanSiswa();
+  document.getElementById("namaBaru").value = "";
 }
 
-function editJK(i,val){
-  dataSiswa[i].jk=val;
-  db.ref('dataSiswa').set(dataSiswa); // update Firebase
+// ===== EDIT =====
+function editNama(i, val) {
+  const trimmed = val.trim();
+  if (!trimmed) return;
+  dataSiswa[i].nama = trimmed;
+  db.ref('dataSiswa').set(dataSiswa);
+}
+function editJK(i, val) {
+  dataSiswa[i].jk = val;
+  db.ref('dataSiswa').set(dataSiswa);
 }
 
-function hapusSiswa(i){
-  if(confirm("Yakin hapus siswa?")){
-    dataSiswa.splice(i,1);
-    db.ref('dataSiswa').set(dataSiswa); // update Firebase
+// ===== HAPUS =====
+function hapusSiswa(i) {
+  if (confirm("Yakin hapus siswa " + dataSiswa[i].nama + "?")) {
+    dataSiswa.splice(i, 1);
+    db.ref('dataSiswa').set(dataSiswa);
     tampilkanSiswa();
   }
 }
 
-function simpanTidakMasuk(){
-  dataSiswa.forEach((s,i)=>{
+// ===== SIMPAN KEHADIRAN =====
+function simpanTidakMasuk() {
+  dataSiswa.forEach((s, i) => {
     const cb = document.getElementById(`chk${i}`);
-    db.ref(`tidakMasuk/${today}/${i}`).set(cb.checked ? 1 : 0);
+    if (cb) db.ref(`tidakMasuk/${today}/${i}`).set(cb.checked ? 1 : 0);
   });
-  alert("Data siswa tidak masuk tersimpan!");
+  alert("✅ Data kehadiran tersimpan!");
   updateChart();
 }
 
-// Chart
+// ===== EXPORT PDF =====
+function exportPDF() {
+  let html = `<html><head><title>Daftar Siswa 9C</title>
+  <style>body{font-family:sans-serif;padding:20px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{border:1px solid #ccc;padding:7px;text-align:center}th{background:#007bff;color:white}</style>
+  </head><body><h2>Daftar Siswa Kelas 9C - ${today}</h2><table>
+  <tr><th>No</th><th>Nama</th><th>JK</th></tr>`;
+  dataSiswa.forEach((s, i) => {
+    html += `<tr><td>${i+1}</td><td>${s.nama}</td><td>${s.jk}</td></tr>`;
+  });
+  html += `</table></body></html>`;
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  win.print();
+}
+
+// ===== CHART =====
 let chart;
 const grafikRef = db.ref('tidakMasuk');
-function updateChart(){
-  grafikRef.once('value',snap=>{
+function updateChart() {
+  grafikRef.once('value', snap => {
     const labels = [];
     const data = [];
-    snap.forEach(dateSnap=>{
+    snap.forEach(dateSnap => {
       labels.push(dateSnap.key);
       let jml = 0;
-      dateSnap.forEach(snapSiswa=>{
-        if(snapSiswa.val()) jml++;
-      });
-      const persen = dataSiswa.length ? ((jml/dataSiswa.length)*100).toFixed(1) : 0;
+      dateSnap.forEach(snapSiswa => { if (snapSiswa.val()) jml++; });
+      const persen = dataSiswa.length ? ((jml / dataSiswa.length) * 100).toFixed(1) : 0;
       data.push(persen);
     });
-    if(!chart){
-      chart = new Chart(document.getElementById("chart"),{
-        type:"line",
-        data:{labels, datasets:[{label:"% Siswa Tidak Masuk",data,borderColor:"#dc3545",backgroundColor:"rgba(220,53,69,0.2)",fill:true}]},
-        options:{responsive:true,scales:{y:{beginAtZero:true,max:100}}}
+    if (!chart) {
+      chart = new Chart(document.getElementById("chart"), {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: "% Siswa Tidak Masuk",
+            data,
+            borderColor: "#dc3545",
+            backgroundColor: "rgba(220,53,69,0.15)",
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: "#dc3545",
+            pointRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { labels: { font: { family: 'Poppins' } } } },
+          scales: { y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' } } }
+        }
       });
     } else {
       chart.data.labels = labels;
@@ -264,12 +654,46 @@ function updateChart(){
   });
 }
 
-// Dark mode
-document.getElementById("darkModeBtn").addEventListener("click",()=>{
+// ===== DARK MODE =====
+document.getElementById("darkModeBtn").addEventListener("click", () => {
   document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  document.getElementById("darkModeBtn").textContent = isDark ? "☀️ Light Mode" : "🌛 Dark Mode";
+  localStorage.setItem("darkMode", isDark ? "1" : "0");
 });
-</script>
+if (localStorage.getItem("darkMode") === "1") {
+  document.body.classList.add("dark");
+  document.getElementById("darkModeBtn").textContent = "☀️ Light Mode";
+}
 
+// ===== HAMBURGER =====
+function toggleNav() {
+  document.getElementById("navLinks").classList.toggle("open");
+}
+
+// ===== ACTIVE NAV =====
+const sections = document.querySelectorAll("section");
+const navLinks = document.querySelectorAll("nav a");
+window.addEventListener("scroll", () => {
+  let current = "";
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.remove("active");
+    if (a.getAttribute("href") === "#" + current) a.classList.add("active");
+  });
+});
+
+// ===== LIGHTBOX =====
+function openLightbox(src) {
+  document.getElementById("lightbox-img").src = src;
+  document.getElementById("lightbox").classList.add("active");
+}
+function closeLightbox() {
+  document.getElementById("lightbox").classList.remove("active");
+}
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeLightbox(); });
+</script>
 </body>
 </html>
-```
