@@ -343,6 +343,27 @@ footer {
   position: relative;
   transition: transform 0.2s, box-shadow 0.2s;
 }
+.struktur-nama-edit {
+  outline: none;
+  border-bottom: 2px dashed var(--primary);
+  cursor: text;
+  display: inline-block;
+  min-width: 60px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.struktur-nama-edit:focus {
+  background: rgba(0,123,255,0.08);
+}
+.struktur-edit-hint {
+  font-size: 0.65rem;
+  color: var(--primary);
+  opacity: 0.7;
+  margin-top: 4px;
+  display: none;
+}
+.struktur-card:hover .struktur-edit-hint { display: block; }
 .struktur-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0,123,255,0.15);
@@ -530,84 +551,9 @@ td select {
 
 <section id="struktur">
   <h2>🏫 Struktur Kelas 9C</h2>
-  <div class="struktur-wrapper">
-
-    <!-- Wali Kelas -->
-    <div class="struktur-level">
-      <div class="struktur-card wali">
-        <div class="struktur-icon">👩‍🏫</div>
-        <div class="struktur-jabatan">Wali Kelas</div>
-        <div class="struktur-nama">—</div>
-      </div>
-    </div>
-    <div class="struktur-line"></div>
-
-    <!-- Ketua -->
-    <div class="struktur-level">
-      <div class="struktur-card ketua">
-        <div class="struktur-icon">👑</div>
-        <div class="struktur-jabatan">Ketua Kelas</div>
-        <div class="struktur-nama">Dimas Anugrah Alfarezki</div>
-      </div>
-    </div>
-    <div class="struktur-line"></div>
-
-    <!-- Wakil Ketua -->
-    <div class="struktur-level">
-      <div class="struktur-card wakil">
-        <div class="struktur-icon">🤝</div>
-        <div class="struktur-jabatan">Wakil Ketua</div>
-        <div class="struktur-nama">Rizky Ramadhan</div>
-      </div>
-    </div>
-    <div class="struktur-line"></div>
-
-    <!-- Bendahara & Sekretaris -->
-    <div class="struktur-hline">
-      <div class="struktur-hline-bar"></div>
-      <div class="struktur-hline-dot"></div>
-      <div class="struktur-hline-bar"></div>
-    </div>
-    <div class="struktur-level">
-      <div class="struktur-card bendahara">
-        <div class="struktur-icon">💰</div>
-        <div class="struktur-jabatan">Bendahara</div>
-        <div class="struktur-nama">Selly Elysiawati</div>
-      </div>
-      <div class="struktur-card sekretaris">
-        <div class="struktur-icon">📝</div>
-        <div class="struktur-jabatan">Sekretaris</div>
-        <div class="struktur-nama">Khansa Nathania Zahra</div>
-      </div>
-    </div>
-    <div class="struktur-line"></div>
-
-    <!-- Seksi-seksi -->
-    <div class="struktur-hline">
-      <div class="struktur-hline-bar"></div>
-      <div class="struktur-hline-dot"></div>
-      <div class="struktur-hline-bar"></div>
-      <div class="struktur-hline-dot"></div>
-      <div class="struktur-hline-bar"></div>
-    </div>
-    <div class="struktur-level">
-      <div class="struktur-card seksi">
-        <div class="struktur-icon">🧹</div>
-        <div class="struktur-jabatan">Seksi Kebersihan</div>
-        <div class="struktur-nama">Widia Nur Afifah<br>Amel Nur Azizah<br>Zeta Nurrianti</div>
-      </div>
-      <div class="struktur-card seksi">
-        <div class="struktur-icon">🔒</div>
-        <div class="struktur-jabatan">Seksi Keamanan</div>
-        <div class="struktur-nama">Syahendra Pangestu<br>Verdi Aryanto<br>Noval Mahesa</div>
-      </div>
-      <div class="struktur-card seksi">
-        <div class="struktur-icon">📢</div>
-        <div class="struktur-jabatan">Seksi Humas</div>
-        <div class="struktur-nama">Vanessa Lathifia Azahra<br>Alvira Indriyani</div>
-      </div>
-    </div>
-
+  <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:14px;">✏️ Klik nama untuk mengedit, perubahan tersimpan otomatis.</p>
+  <div class="struktur-wrapper" id="strukturWrapper">
+    <!-- Di-render oleh JavaScript dari Firebase -->
   </div>
 </section>
 
@@ -925,6 +871,102 @@ function updateChart() {
     }
   });
 }
+
+// ===== STRUKTUR KELAS =====
+const defaultStruktur = {
+  waliKelas:   { jabatan: "Wali Kelas",       icon: "👩‍🏫", nama: "—" },
+  ketua:       { jabatan: "Ketua Kelas",       icon: "👑",   nama: "Dimas Anugrah Alfarezki" },
+  wakilKetua:  { jabatan: "Wakil Ketua",       icon: "🤝",   nama: "Rizky Ramadhan" },
+  bendahara:   { jabatan: "Bendahara",         icon: "💰",   nama: "Selly Elysiawati" },
+  sekretaris:  { jabatan: "Sekretaris",        icon: "📝",   nama: "Khansa Nathania Zahra" },
+  kebersihan:  { jabatan: "Seksi Kebersihan",  icon: "🧹",   nama: "Widia Nur Afifah, Amel Nur Azizah, Zeta Nurrianti" },
+  keamanan:    { jabatan: "Seksi Keamanan",    icon: "🔒",   nama: "Syahendra Pangestu, Verdi Aryanto, Noval Mahesa" },
+  humas:       { jabatan: "Seksi Humas",       icon: "📢",   nama: "Vanessa Lathifia Azahra, Alvira Indriyani" }
+};
+
+let dataStruktur = {};
+
+function renderStruktur() {
+  const s = dataStruktur;
+  const w = document.getElementById('strukturWrapper');
+  if (!w) return;
+
+  function card(key, cssClass) {
+    const d = s[key];
+    // nama mungkin pakai koma sebagai pemisah, tampilkan per baris
+    const namaHtml = d.nama.split(',').map(n => n.trim()).join('<br>');
+    return `<div class="struktur-card ${cssClass}">
+      <div class="struktur-icon">${d.icon}</div>
+      <div class="struktur-jabatan">${d.jabatan}</div>
+      <div class="struktur-nama">
+        <span class="struktur-nama-edit"
+          contenteditable="true"
+          data-key="${key}"
+          onblur="simpanStruktur('${key}', this)"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}"
+        >${namaHtml}</span>
+      </div>
+      <div class="struktur-edit-hint">✏️ klik untuk edit</div>
+    </div>`;
+  }
+
+  w.innerHTML = `
+    <div class="struktur-level">${card('waliKelas','wali')}</div>
+    <div class="struktur-line"></div>
+    <div class="struktur-level">${card('ketua','ketua')}</div>
+    <div class="struktur-line"></div>
+    <div class="struktur-level">${card('wakilKetua','wakil')}</div>
+    <div class="struktur-line"></div>
+    <div class="struktur-hline">
+      <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div><div class="struktur-hline-bar"></div>
+    </div>
+    <div class="struktur-level">
+      ${card('bendahara','bendahara')}
+      ${card('sekretaris','sekretaris')}
+    </div>
+    <div class="struktur-line"></div>
+    <div class="struktur-hline">
+      <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>
+      <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>
+      <div class="struktur-hline-bar"></div>
+    </div>
+    <div class="struktur-level">
+      ${card('kebersihan','seksi')}
+      ${card('keamanan','seksi')}
+      ${card('humas','seksi')}
+    </div>
+  `;
+}
+
+function simpanStruktur(key, el) {
+  // ambil teks bersih (ganti <br> dengan koma)
+  const val = el.innerHTML.replace(/<br\s*\/?>/gi, ', ').replace(/<[^>]+>/g, '').trim();
+  if (!val) return;
+  dataStruktur[key].nama = val;
+  // simpan ke Firebase
+  db.ref('struktur/' + key + '/nama').set(val);
+  // re-render agar konsisten
+  renderStruktur();
+}
+
+// Load dari Firebase, fallback ke default
+db.ref('struktur').once('value', snap => {
+  if (snap.exists()) {
+    const fromDB = snap.val();
+    // merge: gunakan default sebagai base, timpa dengan data Firebase
+    dataStruktur = JSON.parse(JSON.stringify(defaultStruktur));
+    Object.keys(fromDB).forEach(k => {
+      if (dataStruktur[k]) dataStruktur[k].nama = fromDB[k].nama || dataStruktur[k].nama;
+    });
+  } else {
+    dataStruktur = JSON.parse(JSON.stringify(defaultStruktur));
+    // simpan default ke Firebase
+    const toSave = {};
+    Object.keys(defaultStruktur).forEach(k => { toSave[k] = { nama: defaultStruktur[k].nama }; });
+    db.ref('struktur').set(toSave);
+  }
+  renderStruktur();
+});
 
 // ===== DARK MODE =====
 document.getElementById("darkModeBtn").addEventListener("click", () => {
