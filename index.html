@@ -670,7 +670,7 @@ td select {
 
 <section id="struktur">
   <h2>🏫 Struktur Kelas 9C</h2>
-  <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:14px;">✏️ Klik nama untuk mengedit, perubahan tersimpan otomatis.</p>
+  <p id="strukturEditHint" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:14px;display:none;">✏️ Klik nama untuk mengedit, perubahan tersimpan otomatis.</p>
   <div class="struktur-wrapper" id="strukturWrapper"></div>
 </section>
 
@@ -807,6 +807,11 @@ function applyAdminUI() {
   // Kolom hapus di tabel header
   document.getElementById('thHapus').classList.toggle('admin-visible', isAdmin);
   // Semua cell hapus di tbody dihandle saat render tabel
+  // Struktur kelas: re-render agar contenteditable ikut berubah
+  if (Object.keys(dataStruktur).length > 0) renderStruktur();
+  // Hint teks edit struktur
+  const hint = document.getElementById('strukturEditHint');
+  if (hint) hint.style.display = isAdmin ? 'block' : 'none';
 }
 
 // Animasi shake untuk modal
@@ -1105,14 +1110,16 @@ function updateChart() {
 
 // ===== STRUKTUR KELAS =====
 const defaultStruktur = {
-  waliKelas:   { jabatan: "Wali Kelas",       icon: "👩‍🏫", nama: "—" },
-  ketua:       { jabatan: "Ketua Kelas",       icon: "👑",   nama: "Dimas Anugrah Alfarezki" },
-  wakilKetua:  { jabatan: "Wakil Ketua",       icon: "🤝",   nama: "Rizky Ramadhan" },
-  bendahara:   { jabatan: "Bendahara",         icon: "💰",   nama: "Selly Elysiawati" },
-  sekretaris:  { jabatan: "Sekretaris",        icon: "📝",   nama: "Khansa Nathania Zahra" },
-  kebersihan:  { jabatan: "Seksi Kebersihan",  icon: "🧹",   nama: "Widia Nur Afifah, Amel Nur Azizah, Zeta Nurrianti" },
-  keamanan:    { jabatan: "Seksi Keamanan",    icon: "🔒",   nama: "Syahendra Pangestu, Verdi Aryanto, Noval Mahesa" },
-  humas:       { jabatan: "Seksi Humas",       icon: "📢",   nama: "Vanessa Lathifia Azahra, Alvira Indriyani" }
+  waliKelas:   { jabatan: "Wali Kelas",        icon: "👩‍🏫", nama: "Puji Purwanti" },
+  ketua:       { jabatan: "Ketua Kelas",        icon: "👑",   nama: "Dimas Anugrah Alfarezki" },
+  wakilKetua:  { jabatan: "Wakil Ketua Kelas",  icon: "🤝",   nama: "Rizky Ramadhan" },
+  bendahara:   { jabatan: "Bendahara",          icon: "💰",   nama: "Amel Nur Azizah, Alvira Indriyani" },
+  sekretaris:  { jabatan: "Sekretaris",         icon: "📝",   nama: "Selly Elysiawati, Titis Andriyana" },
+  keamanan:    { jabatan: "Seksi Keamanan",     icon: "🔒",   nama: "—" },
+  tujuhk:      { jabatan: "Seksi 7K",           icon: "⭐",   nama: "—" },
+  keagamaan:   { jabatan: "Seksi Keagamaan",    icon: "🕌",   nama: "—" },
+  kebersihan:  { jabatan: "Seksi Kebersihan",   icon: "🧹",   nama: "—" },
+  olahraga:    { jabatan: "Seksi Olahraga",     icon: "⚽",   nama: "—" }
 };
 
 let dataStruktur = {};
@@ -1129,13 +1136,14 @@ function renderStruktur() {
       <div class="struktur-jabatan">${d.jabatan}</div>
       <div class="struktur-nama">
         <span class="struktur-nama-edit"
-          contenteditable="true"
+          contenteditable="${isAdmin ? 'true' : 'false'}"
           data-key="${key}"
-          onblur="simpanStruktur('${key}', this)"
-          onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}"
+          onblur="if(isAdmin) simpanStruktur('${key}', this)"
+          onkeydown="if(isAdmin && event.key==='Enter'){event.preventDefault();this.blur();}"
+          style="cursor: ${isAdmin ? 'text' : 'default'}"
         >${namaHtml}</span>
       </div>
-      <div class="struktur-edit-hint">✏️ klik untuk edit</div>
+      <div class="struktur-edit-hint" style="display:${isAdmin ? '' : 'none !important'}">✏️ klik untuk edit</div>
     </div>`;
   }
   w.innerHTML = `
@@ -1156,23 +1164,18 @@ function renderStruktur() {
     <div class="struktur-hline">
       <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>
       <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>
+      <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>
+      <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>
       <div class="struktur-hline-bar"></div>
     </div>
     <div class="struktur-level">
-      ${card('kebersihan','seksi')}
       ${card('keamanan','seksi')}
-      ${card('humas','seksi')}
-    </div>
-    <div class="struktur-line"></div>
-    <div class="struktur-hline">
-      <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div><div class="struktur-hline-bar"></div>
-    </div>
-    <div class="struktur-level">
-      ${card('keagamaan','seksi')}
       ${card('tujuhk','seksi')}
+      ${card('keagamaan','seksi')}
+      ${card('kebersihan','seksi')}
+      ${card('olahraga','seksi')}
     </div>
-  `;
-}
+  `;}
 
 function simpanStruktur(key, el) {
   const val = el.innerHTML.replace(/<br\s*\/?>/gi, ', ').replace(/<[^>]+>/g, '').trim();
@@ -1183,18 +1186,19 @@ function simpanStruktur(key, el) {
 }
 
 db.ref('struktur').once('value', snap => {
+  // Selalu mulai dari defaultStruktur sebagai base
+  dataStruktur = JSON.parse(JSON.stringify(defaultStruktur));
   if (snap.exists()) {
     const fromDB = snap.val();
-    dataStruktur = JSON.parse(JSON.stringify(defaultStruktur));
-    Object.keys(fromDB).forEach(k => {
-      if (dataStruktur[k]) dataStruktur[k].nama = fromDB[k].nama || dataStruktur[k].nama;
+    // Hanya timpa nama jika key ada di defaultStruktur
+    Object.keys(defaultStruktur).forEach(k => {
+      if (fromDB[k] && fromDB[k].nama) dataStruktur[k].nama = fromDB[k].nama;
     });
-  } else {
-    dataStruktur = JSON.parse(JSON.stringify(defaultStruktur));
-    const toSave = {};
-    Object.keys(defaultStruktur).forEach(k => { toSave[k] = { nama: defaultStruktur[k].nama }; });
-    db.ref('struktur').set(toSave);
   }
+  // Simpan ulang ke Firebase agar sinkron dengan key terbaru
+  const toSave = {};
+  Object.keys(defaultStruktur).forEach(k => { toSave[k] = { nama: dataStruktur[k].nama }; });
+  db.ref('struktur').set(toSave);
   renderStruktur();
 });
 
