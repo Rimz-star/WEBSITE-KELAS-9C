@@ -103,16 +103,32 @@ header p { font-size: 0.95rem; opacity: 0.88; margin-top: 4px; }
 /* ===== HIDDEN ADMIN TRIGGER (titik kecil di footer) ===== */
 #adminTrigger {
   position: fixed;
-  bottom: 12px;
-  right: 12px;
-  width: 12px;
-  height: 12px;
+  bottom: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: transparent;
-  border: none;
+  background: rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255,255,255,0.35);
   cursor: pointer;
   z-index: 9998;
-  opacity: 0;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: background 0.2s, transform 0.2s;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.5);
+  line-height: 1;
+}
+#adminTrigger:hover {
+  background: rgba(255,255,255,0.28);
+  transform: scale(1.1);
+}
+body.dark #adminTrigger {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.18);
 }
 
 /* ===== MODAL LOGIN ADMIN ===== */
@@ -1146,6 +1162,14 @@ function renderStruktur() {
       ${card('kebersihan','seksi')}
       ${card('keamanan','seksi')}
       ${card('humas','seksi')}
+    </div>
+    <div class="struktur-line"></div>
+    <div class="struktur-hline">
+      <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div><div class="struktur-hline-bar"></div>
+    </div>
+    <div class="struktur-level">
+      ${card('keagamaan','seksi')}
+      ${card('tujuhk','seksi')}
     </div>
   `;
 }
