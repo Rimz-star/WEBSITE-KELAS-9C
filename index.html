@@ -80,6 +80,137 @@ header p { font-size: 0.95rem; opacity: 0.88; margin-top: 4px; }
 }
 #darkModeBtn:hover { background: rgba(255,255,255,0.35); }
 
+/* ===== ADMIN BADGE ===== */
+#adminBadge {
+  display: none;
+  position: absolute;
+  top: 16px; left: 16px;
+  background: rgba(255,215,0,0.25);
+  border: 1.5px solid rgba(255,215,0,0.6);
+  color: #ffe066;
+  padding: 7px 14px;
+  border-radius: 30px;
+  font-size: 0.82rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background var(--transition);
+}
+#adminBadge:hover { background: rgba(255,215,0,0.35); }
+#adminBadge.visible { display: block; }
+
+/* ===== HIDDEN ADMIN TRIGGER (titik kecil di footer) ===== */
+#adminTrigger {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 9998;
+  opacity: 0;
+}
+
+/* ===== MODAL LOGIN ADMIN ===== */
+#adminModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(6px);
+}
+#adminModal.active { display: flex; }
+.admin-modal-box {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 36px 32px 28px;
+  width: 340px;
+  max-width: 92vw;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: modalSlideIn 0.3s ease;
+  position: relative;
+}
+@keyframes modalSlideIn {
+  from { opacity: 0; transform: translateY(-24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.admin-modal-box h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 6px;
+  text-align: center;
+}
+.admin-modal-box p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 22px;
+}
+.admin-modal-box input {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  margin-bottom: 14px;
+  transition: border var(--transition);
+}
+.admin-modal-box input:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+.admin-modal-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.admin-modal-btns button {
+  flex: 1;
+  padding: 10px;
+  font-size: 0.85rem;
+}
+.btn-cancel-modal {
+  background: var(--border) !important;
+  color: var(--text) !important;
+}
+.btn-cancel-modal:hover { background: #bbb !important; }
+#adminLoginError {
+  font-size: 0.78rem;
+  color: var(--danger);
+  text-align: center;
+  margin-top: -6px;
+  margin-bottom: 8px;
+  min-height: 18px;
+}
+.admin-lock-icon {
+  font-size: 2.8rem;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.admin-modal-close {
+  position: absolute;
+  top: 14px; right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+.admin-modal-close:hover { color: var(--text); background: none; transform: none; }
+
 /* ===== NAVBAR ===== */
 nav {
   background: var(--primary-dark);
@@ -124,7 +255,6 @@ nav a:hover::after,
 nav a.active::after { transform: scaleX(1); }
 nav a.active { color: white; }
 
-/* Hamburger */
 #hamburger {
   display: none;
   flex-direction: column;
@@ -187,7 +317,6 @@ section h2 {
 @media (max-width: 768px) { .gallery img { width: 48%; } }
 @media (max-width: 480px) { .gallery img { width: 100%; } }
 
-/* Lightbox */
 #lightbox {
   display: none; position: fixed;
   inset: 0; background: rgba(0,0,0,0.88);
@@ -228,6 +357,10 @@ section h2 {
 }
 .siswa-controls input[type="text"] { flex: 1; min-width: 140px; }
 
+/* Tampilkan kontrol tambah hanya saat admin */
+#adminOnlyControls { display: none; }
+#adminOnlyControls.admin-visible { display: contents; }
+
 #searchSiswa {
   padding: 8px 12px;
   border-radius: 8px;
@@ -242,10 +375,30 @@ section h2 {
 }
 #searchSiswa:focus { border-color: var(--primary); outline: none; }
 
+/* Admin info bar */
+#adminInfoBar {
+  display: none;
+  background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,165,0,0.1));
+  border: 1.5px solid rgba(255,215,0,0.4);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  font-size: 0.82rem;
+  color: var(--text);
+  align-items: center;
+  gap: 10px;
+}
+#adminInfoBar.visible { display: flex; }
+#adminInfoBar span { flex: 1; }
+
 table { width: 100%; border-collapse: collapse; margin-top: 4px; font-size: 0.83rem; }
 th, td { border: 1px solid var(--border); padding: 9px 8px; text-align: center; transition: background var(--transition); }
 th { background: var(--primary); color: white; font-weight: 600; }
 tbody tr:hover { background: rgba(0,123,255,0.05); }
+
+/* Kolom hapus tersembunyi untuk non-admin */
+.col-hapus { display: none; }
+.col-hapus.admin-visible { display: table-cell; }
 
 button {
   padding: 7px 14px;
@@ -301,7 +454,6 @@ button.success:hover { background: #1e7e34; }
 .senam{background:#ff6347;color:white}
 .istirahat{background:#ffd700}
 
-/* ===== CHART ===== */
 #chart { max-height: 320px; }
 
 /* ===== KONTAK ===== */
@@ -316,6 +468,7 @@ footer {
   margin-top: 10px;
   font-size: 0.88rem;
   opacity: 0.95;
+  position: relative;
 }
 
 /* ===== STRUKTUR KELAS ===== */
@@ -353,9 +506,7 @@ footer {
   border-radius: 4px;
   transition: background 0.2s;
 }
-.struktur-nama-edit:focus {
-  background: rgba(0,123,255,0.08);
-}
+.struktur-nama-edit:focus { background: rgba(0,123,255,0.08); }
 .struktur-edit-hint {
   font-size: 0.65rem;
   color: var(--primary);
@@ -368,81 +519,24 @@ footer {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0,123,255,0.15);
 }
-.struktur-card.wali {
-  border-color: #ffd700;
-  background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,165,0,0.05));
-}
-.struktur-card.ketua {
-  border-color: #007bff;
-  background: linear-gradient(135deg, rgba(0,123,255,0.1), rgba(0,67,168,0.05));
-}
-.struktur-card.wakil {
-  border-color: #28a745;
-  background: linear-gradient(135deg, rgba(40,167,69,0.1), rgba(25,110,45,0.05));
-}
-.struktur-card.bendahara {
-  border-color: #fd7e14;
-  background: linear-gradient(135deg, rgba(253,126,20,0.1), rgba(200,80,0,0.05));
-}
-.struktur-card.sekretaris {
-  border-color: #e83e8c;
-  background: linear-gradient(135deg, rgba(232,62,140,0.1), rgba(180,30,100,0.05));
-}
-.struktur-card.seksi {
-  border-color: #6f42c1;
-  background: linear-gradient(135deg, rgba(111,66,193,0.1), rgba(70,30,150,0.05));
-}
-.struktur-jabatan {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-.struktur-nama {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text);
-  line-height: 1.4;
-}
-.struktur-icon {
-  font-size: 1.6rem;
-  margin-bottom: 6px;
-}
-/* Garis penghubung vertikal */
-.struktur-line {
-  width: 2px;
-  height: 28px;
-  background: var(--border);
-  margin: 0 auto;
-}
-/* Garis horizontal penghubung antar card */
-.struktur-hline {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  margin: 0 auto;
-  width: 80%;
-}
-.struktur-hline-bar {
-  height: 2px;
-  background: var(--border);
-  flex: 1;
-}
-.struktur-hline-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--border);
-  flex-shrink: 0;
-}
+.struktur-card.wali { border-color: #ffd700; background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,165,0,0.05)); }
+.struktur-card.ketua { border-color: #007bff; background: linear-gradient(135deg, rgba(0,123,255,0.1), rgba(0,67,168,0.05)); }
+.struktur-card.wakil { border-color: #28a745; background: linear-gradient(135deg, rgba(40,167,69,0.1), rgba(25,110,45,0.05)); }
+.struktur-card.bendahara { border-color: #fd7e14; background: linear-gradient(135deg, rgba(253,126,20,0.1), rgba(200,80,0,0.05)); }
+.struktur-card.sekretaris { border-color: #e83e8c; background: linear-gradient(135deg, rgba(232,62,140,0.1), rgba(180,30,100,0.05)); }
+.struktur-card.seksi { border-color: #6f42c1; background: linear-gradient(135deg, rgba(111,66,193,0.1), rgba(70,30,150,0.05)); }
+.struktur-jabatan { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.struktur-nama { font-size: 0.88rem; font-weight: 600; color: var(--text); line-height: 1.4; }
+.struktur-icon { font-size: 1.6rem; margin-bottom: 6px; }
+.struktur-line { width: 2px; height: 28px; background: var(--border); margin: 0 auto; }
+.struktur-hline { display: flex; align-items: center; justify-content: center; gap: 0; margin: 0 auto; width: 80%; }
+.struktur-hline-bar { height: 2px; background: var(--border); flex: 1; }
+.struktur-hline-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
 @media (max-width: 600px) {
   .struktur-card { min-width: 120px; padding: 10px 12px; }
   .struktur-hline { width: 95%; }
 }
 
-/* ===== SELECT IN TABLE ===== */
 td select {
   padding: 4px 6px;
   border-radius: 6px;
@@ -459,6 +553,7 @@ td select {
 <header>
   <h1>Website Kelas 9C 2025/2026</h1>
   <p>SMP NEGERI 1 KEBASEN</p>
+  <button id="adminBadge" onclick="logoutAdmin()" title="Klik untuk logout admin">👑 Admin &nbsp;·&nbsp; Logout</button>
   <button id="darkModeBtn">🌛 Dark Mode</button>
 </header>
 
@@ -488,7 +583,6 @@ td select {
   </div>
 </section>
 
-<!-- Lightbox -->
 <div id="lightbox" onclick="closeLightbox()">
   <button id="lightbox-close" onclick="closeLightbox()">✕</button>
   <img id="lightbox-img" src="" alt="Preview">
@@ -496,14 +590,23 @@ td select {
 
 <section id="siswa">
   <h2>👥 Daftar Siswa & Siswa Tidak Masuk</h2>
+
+  <!-- Info bar admin -->
+  <div id="adminInfoBar">
+    <span>👑 <strong>Mode Admin aktif</strong> — Anda dapat menambah dan menghapus siswa.</span>
+  </div>
+
   <input type="text" id="searchSiswa" placeholder="🔍 Cari nama siswa..." oninput="filterSiswa()">
   <div class="siswa-controls">
-    <input type="text" id="namaBaru" placeholder="Nama siswa baru">
-    <select id="jkBaru">
-      <option value="L">Laki-laki</option>
-      <option value="P">Perempuan</option>
-    </select>
-    <button onclick="tambahSiswa()">+ Tambah</button>
+    <!-- Kontrol hanya muncul saat admin -->
+    <span id="adminOnlyControls">
+      <input type="text" id="namaBaru" placeholder="Nama siswa baru" style="padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;font-size:0.85rem;min-width:140px;">
+      <select id="jkBaru" style="padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;font-size:0.85rem;margin-left:6px;">
+        <option value="L">Laki-laki</option>
+        <option value="P">Perempuan</option>
+      </select>
+      <button onclick="tambahSiswa()" style="margin-left:6px;">+ Tambah</button>
+    </span>
     <button class="success" onclick="simpanTidakMasuk()">💾 Simpan Kehadiran</button>
     <button class="btn-export" onclick="exportPDF()">📄 Export PDF</button>
   </div>
@@ -515,7 +618,7 @@ td select {
         <th>Nama</th>
         <th>JK</th>
         <th>Tidak Masuk</th>
-        <th>Aksi</th>
+        <th class="col-hapus" id="thHapus">Aksi</th>
       </tr>
     </thead>
     <tbody id="tabelSiswa"></tbody>
@@ -552,9 +655,7 @@ td select {
 <section id="struktur">
   <h2>🏫 Struktur Kelas 9C</h2>
   <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:14px;">✏️ Klik nama untuk mengedit, perubahan tersimpan otomatis.</p>
-  <div class="struktur-wrapper" id="strukturWrapper">
-    <!-- Di-render oleh JavaScript dari Firebase -->
-  </div>
+  <div class="struktur-wrapper" id="strukturWrapper"></div>
 </section>
 
 <section id="kehadiran">
@@ -572,7 +673,28 @@ td select {
 
 <footer>
   &copy; 2026 Website Kelas 9C 2025/2026 &mdash; SMP Negeri 1 Kebasen
+  <!-- Trigger tersembunyi: klik 5x cepat di area copyright untuk buka login admin -->
 </footer>
+
+<!-- Tombol invisible trigger admin di pojok kanan bawah -->
+<button id="adminTrigger" onclick="handleAdminTrigger()" title=""></button>
+
+<!-- Modal Login Admin -->
+<div id="adminModal">
+  <div class="admin-modal-box">
+    <button class="admin-modal-close" onclick="closeAdminModal()">✕</button>
+    <div class="admin-lock-icon">🔐</div>
+    <h3>Login Admin</h3>
+    <p>Masukkan kata sandi untuk mengakses fitur admin</p>
+    <input type="password" id="adminPassInput" placeholder="Kata sandi admin"
+      onkeydown="if(event.key==='Enter') doAdminLogin()">
+    <div id="adminLoginError"></div>
+    <div class="admin-modal-btns">
+      <button class="btn-cancel-modal" onclick="closeAdminModal()">Batal</button>
+      <button onclick="doAdminLogin()">🔓 Login</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // ===== FIREBASE =====
@@ -589,24 +711,120 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// ===== ADMIN SYSTEM =====
+// ⚠️ Ganti password di bawah ini sesuai keinginan
+const ADMIN_PASSWORD = "admin9C2026";
+
+let isAdmin = false;
+let adminTriggerCount = 0;
+let adminTriggerTimer = null;
+
+// Cek session admin (bertahan selama tab terbuka saja, tidak disimpan di localStorage)
+function handleAdminTrigger() {
+  adminTriggerCount++;
+  clearTimeout(adminTriggerTimer);
+  adminTriggerTimer = setTimeout(() => { adminTriggerCount = 0; }, 2000);
+  if (adminTriggerCount >= 5) {
+    adminTriggerCount = 0;
+    if (!isAdmin) openAdminModal();
+  }
+}
+
+// Alternatif: ketuk footer 5x untuk munculkan modal
+let footerTapCount = 0;
+let footerTapTimer = null;
+document.querySelector('footer').addEventListener('click', () => {
+  if (isAdmin) return;
+  footerTapCount++;
+  clearTimeout(footerTapTimer);
+  footerTapTimer = setTimeout(() => { footerTapCount = 0; }, 2500);
+  if (footerTapCount >= 5) {
+    footerTapCount = 0;
+    openAdminModal();
+  }
+});
+
+function openAdminModal() {
+  document.getElementById('adminModal').classList.add('active');
+  document.getElementById('adminPassInput').value = '';
+  document.getElementById('adminLoginError').textContent = '';
+  setTimeout(() => document.getElementById('adminPassInput').focus(), 100);
+}
+
+function closeAdminModal() {
+  document.getElementById('adminModal').classList.remove('active');
+}
+
+function doAdminLogin() {
+  const val = document.getElementById('adminPassInput').value;
+  if (val === ADMIN_PASSWORD) {
+    isAdmin = true;
+    closeAdminModal();
+    applyAdminUI();
+    tampilkanSiswa();
+  } else {
+    document.getElementById('adminLoginError').textContent = '❌ Kata sandi salah, coba lagi.';
+    document.getElementById('adminPassInput').value = '';
+    document.getElementById('adminPassInput').focus();
+    // Animasi shake
+    const box = document.querySelector('.admin-modal-box');
+    box.style.animation = 'none';
+    box.offsetHeight;
+    box.style.animation = 'shake 0.4s ease';
+  }
+}
+
+function logoutAdmin() {
+  if (!confirm('Logout dari mode admin?')) return;
+  isAdmin = false;
+  applyAdminUI();
+  tampilkanSiswa();
+}
+
+function applyAdminUI() {
+  // Badge di header
+  document.getElementById('adminBadge').classList.toggle('visible', isAdmin);
+  // Info bar di seksi siswa
+  document.getElementById('adminInfoBar').classList.toggle('visible', isAdmin);
+  // Kontrol tambah siswa
+  document.getElementById('adminOnlyControls').classList.toggle('admin-visible', isAdmin);
+  // Kolom hapus di tabel header
+  document.getElementById('thHapus').classList.toggle('admin-visible', isAdmin);
+  // Semua cell hapus di tbody dihandle saat render tabel
+}
+
+// Animasi shake untuk modal
+const shakeStyle = document.createElement('style');
+shakeStyle.textContent = `
+  @keyframes shake {
+    0%,100%{transform:translateX(0)}
+    20%{transform:translateX(-8px)}
+    40%{transform:translateX(8px)}
+    60%{transform:translateX(-6px)}
+    80%{transform:translateX(6px)}
+  }
+`;
+document.head.appendChild(shakeStyle);
+
+// Tutup modal saat klik backdrop
+document.getElementById('adminModal').addEventListener('click', function(e) {
+  if (e.target === this) closeAdminModal();
+});
+
+// ===== TANGGAL =====
 function getToday() {
   const d = new Date();
   return `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}/${d.getFullYear()}`;
 }
 let today = getToday();
 
-// Auto update tanggal setiap jam 00:00
 function jadwalkanUpdate() {
   const sekarang = new Date();
   const besok = new Date(sekarang.getFullYear(), sekarang.getMonth(), sekarang.getDate()+1, 0, 0, 0);
-  const selisih = besok - sekarang;
-  setTimeout(() => {
-    today = getToday();
-    tampilkanSiswa();
-    jadwalkanUpdate();
-  }, selisih);
+  setTimeout(() => { today = getToday(); tampilkanSiswa(); jadwalkanUpdate(); }, besok - sekarang);
 }
 jadwalkanUpdate();
+
 const tabel = document.getElementById("tabelSiswa");
 let dataSiswa = [];
 let searchQuery = "";
@@ -671,13 +889,19 @@ function tampilkanSiswa() {
       const initials = s.nama.split(" ").map(w=>w[0]).join("").toUpperCase().slice(0,2);
       const colors = ["#007bff","#28a745","#dc3545","#fd7e14","#6f42c1","#17a2b8"];
       const color = colors[index % colors.length];
+
+      // Kolom hapus: hanya render jika admin
+      const hapusCell = isAdmin
+        ? `<td class="col-hapus admin-visible"><button class="delete" onclick="hapusSiswa(${index})">Hapus</button></td>`
+        : `<td class="col-hapus"></td>`;
+
       tabel.innerHTML += `
       <tr>
         <td>${index+1}</td>
         <td>
           <div style="display:flex;align-items:center;gap:8px;justify-content:center;">
             <div style="width:28px;height:28px;border-radius:50%;background:${color};color:white;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0;">${initials}</div>
-            <span contenteditable="true" onblur="editNama(${index},this.innerText)" style="outline:none;border-bottom:1px dashed transparent;cursor:text;" onfocus="this.style.borderBottomColor='var(--primary)'" onblur2="this.style.borderBottomColor='transparent'">${s.nama}</span>
+            <span contenteditable="true" onblur="editNama(${index},this.innerText)" style="outline:none;border-bottom:1px dashed transparent;cursor:text;" onfocus="this.style.borderBottomColor='var(--primary)'">${s.nama}</span>
           </div>
         </td>
         <td>
@@ -687,7 +911,7 @@ function tampilkanSiswa() {
           </select>
         </td>
         <td><input type="checkbox" id="chk${index}" ${checked} style="width:16px;height:16px;cursor:pointer;"></td>
-        <td><button class="delete" onclick="hapusSiswa(${index})">Hapus</button></td>
+        ${hapusCell}
       </tr>`;
     });
     setTimeout(updateChart, 500);
@@ -700,8 +924,9 @@ function filterSiswa() {
   tampilkanSiswa();
 }
 
-// ===== TAMBAH SISWA =====
+// ===== TAMBAH SISWA (admin only) =====
 function tambahSiswa() {
+  if (!isAdmin) return alert("Hanya admin yang bisa menambah siswa!");
   const nama = document.getElementById("namaBaru").value.trim();
   const jk = document.getElementById("jkBaru").value;
   if (!nama) return alert("Isi nama dulu!");
@@ -725,8 +950,9 @@ function editJK(i, val) {
   db.ref('dataSiswa').set(dataSiswa);
 }
 
-// ===== HAPUS =====
+// ===== HAPUS (admin only) =====
 function hapusSiswa(i) {
+  if (!isAdmin) return alert("Hanya admin yang bisa menghapus siswa!");
   if (confirm("Yakin hapus siswa " + dataSiswa[i].nama + "?")) {
     dataSiswa.splice(i, 1);
     db.ref('dataSiswa').set(dataSiswa);
@@ -774,7 +1000,6 @@ function updateChart() {
       const parts = raw.split("/");
       let dateObj;
       if (parts.length === 3) {
-        // format DD/MM/YYYY
         dateObj = new Date(parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]));
       } else {
         dateObj = new Date(raw);
@@ -793,26 +1018,18 @@ function updateChart() {
       const persen = dataSiswa.length ? ((jml / dataSiswa.length) * 100).toFixed(1) : 0;
       data.push(persen);
     });
-    // Dataset utama: garis hanya sampai hari terakhir yang ada data
-    // Titik akhir (hari realtime/hari ini) ditandai titik menonjol
     const todayLabel = (() => {
       const d = new Date();
       const namaHari2 = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
       const namaBulan2 = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
       return namaHari2[d.getDay()] + ", " + d.getDate() + " " + namaBulan2[d.getMonth()] + " " + d.getFullYear();
     })();
-
-    // Tambah label hari ini jika belum ada
     if (!labels.includes(todayLabel)) {
       labels.push(todayLabel);
-      data.push(null); // null = tidak ada garis, hanya titik penanda
+      data.push(null);
     }
-
-    // Warna titik: merah semua, titik terakhir (hari ini) lebih besar & berbeda
     const pointColors = labels.map((l, i) => i === labels.length - 1 ? "#ff4757" : "#dc3545");
     const pointSizes  = labels.map((l, i) => i === labels.length - 1 ? 10 : 6);
-    const pointBorders = labels.map((l, i) => i === labels.length - 1 ? "#fff" : "#fff");
-
     const chartConfig = {
       type: "line",
       data: {
@@ -826,7 +1043,7 @@ function updateChart() {
           tension: 0,
           spanGaps: false,
           pointBackgroundColor: pointColors,
-          pointBorderColor: pointBorders,
+          pointBorderColor: "#fff",
           pointBorderWidth: 2.5,
           pointRadius: pointSizes,
           pointHoverRadius: 12,
@@ -851,15 +1068,13 @@ function updateChart() {
             ticks: { font: { family: 'Poppins', size: 11 }, maxRotation: 30, minRotation: 0 }
           },
           y: {
-            beginAtZero: true,
-            max: 100,
+            beginAtZero: true, max: 100,
             title: { display: true, text: "% Tidak Masuk", font: { family: 'Poppins', size: 12 } },
             ticks: { font: { family: 'Poppins', size: 11 }, callback: v => v + "%" }
           }
         }
       }
     };
-
     if (!chart) {
       chart = new Chart(document.getElementById("chart"), chartConfig);
     } else {
@@ -890,10 +1105,8 @@ function renderStruktur() {
   const s = dataStruktur;
   const w = document.getElementById('strukturWrapper');
   if (!w) return;
-
   function card(key, cssClass) {
     const d = s[key];
-    // nama mungkin pakai koma sebagai pemisah, tampilkan per baris
     const namaHtml = d.nama.split(',').map(n => n.trim()).join('<br>');
     return `<div class="struktur-card ${cssClass}">
       <div class="struktur-icon">${d.icon}</div>
@@ -909,7 +1122,6 @@ function renderStruktur() {
       <div class="struktur-edit-hint">✏️ klik untuk edit</div>
     </div>`;
   }
-
   w.innerHTML = `
     <div class="struktur-level">${card('waliKelas','wali')}</div>
     <div class="struktur-line"></div>
@@ -939,28 +1151,22 @@ function renderStruktur() {
 }
 
 function simpanStruktur(key, el) {
-  // ambil teks bersih (ganti <br> dengan koma)
   const val = el.innerHTML.replace(/<br\s*\/?>/gi, ', ').replace(/<[^>]+>/g, '').trim();
   if (!val) return;
   dataStruktur[key].nama = val;
-  // simpan ke Firebase
   db.ref('struktur/' + key + '/nama').set(val);
-  // re-render agar konsisten
   renderStruktur();
 }
 
-// Load dari Firebase, fallback ke default
 db.ref('struktur').once('value', snap => {
   if (snap.exists()) {
     const fromDB = snap.val();
-    // merge: gunakan default sebagai base, timpa dengan data Firebase
     dataStruktur = JSON.parse(JSON.stringify(defaultStruktur));
     Object.keys(fromDB).forEach(k => {
       if (dataStruktur[k]) dataStruktur[k].nama = fromDB[k].nama || dataStruktur[k].nama;
     });
   } else {
     dataStruktur = JSON.parse(JSON.stringify(defaultStruktur));
-    // simpan default ke Firebase
     const toSave = {};
     Object.keys(defaultStruktur).forEach(k => { toSave[k] = { nama: defaultStruktur[k].nama }; });
     db.ref('struktur').set(toSave);
@@ -1007,7 +1213,12 @@ function openLightbox(src) {
 function closeLightbox() {
   document.getElementById("lightbox").classList.remove("active");
 }
-document.addEventListener("keydown", e => { if (e.key === "Escape") closeLightbox(); });
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    closeLightbox();
+    closeAdminModal();
+  }
+});
 </script>
 </body>
 </html>
