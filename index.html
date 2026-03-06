@@ -1125,57 +1125,63 @@ const defaultStruktur = {
 let dataStruktur = {};
 
 function renderStruktur() {
-  const s = dataStruktur;
-  const w = document.getElementById('strukturWrapper');
+  var s = dataStruktur;
+  var w = document.getElementById('strukturWrapper');
   if (!w) return;
+
   function card(key, cssClass) {
-    const d = s[key];
-    const namaHtml = d.nama.split(',').map(n => n.trim()).join('<br>');
-    return `<div class="struktur-card ${cssClass}">
-      <div class="struktur-icon">${d.icon}</div>
-      <div class="struktur-jabatan">${d.jabatan}</div>
-      <div class="struktur-nama">
-        <span class="struktur-nama-edit"
-          contenteditable="${isAdmin ? 'true' : 'false'}"
-          data-key="${key}"
-          onblur="if(isAdmin) simpanStruktur('${key}', this)"
-          onkeydown="if(isAdmin && event.key==='Enter'){event.preventDefault();this.blur();}"
-          style="cursor: ${isAdmin ? 'text' : 'default'}"
-        >${namaHtml}</span>
-      </div>
-      <div class="struktur-edit-hint" style="display:${isAdmin ? '' : 'none !important'}">✏️ klik untuk edit</div>
-    </div>`;
+    var d = s[key];
+    if (!d) return '';
+    var namaHtml = d.nama.split(',').map(function(n){ return n.trim(); }).join('<br>');
+    var editable = isAdmin ? 'true' : 'false';
+    var cursor   = isAdmin ? 'text' : 'default';
+    var hintDisp = isAdmin ? 'block' : 'none';
+    var blurHandler = isAdmin ? 'simpanStruktur(\'' + key + '\', this)' : '';
+    var html = '<div class="struktur-card ' + cssClass + '">';
+    html += '<div class="struktur-icon">' + d.icon + '</div>';
+    html += '<div class="struktur-jabatan">' + d.jabatan + '</div>';
+    html += '<div class="struktur-nama">';
+    html += '<span class="struktur-nama-edit"';
+    html += ' contenteditable="' + editable + '"';
+    html += ' data-key="' + key + '"';
+    if (isAdmin) {
+      html += ' onblur="simpanStruktur(this.dataset.key, this)"';
+      html += ' onkeydown="if(event.key===\'Enter\'){event.preventDefault();this.blur();}"';
+    }
+    html += ' style="cursor:' + cursor + '"';
+    html += '>' + namaHtml + '</span>';
+    html += '</div>';
+    html += '<div class="struktur-edit-hint" style="display:' + hintDisp + '">✏️ klik untuk edit</div>';
+    html += '</div>';
+    return html;
   }
-  w.innerHTML = `
-    <div class="struktur-level">${card('waliKelas','wali')}</div>
-    <div class="struktur-line"></div>
-    <div class="struktur-level">${card('ketua','ketua')}</div>
-    <div class="struktur-line"></div>
-    <div class="struktur-level">${card('wakilKetua','wakil')}</div>
-    <div class="struktur-line"></div>
-    <div class="struktur-hline">
-      <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div><div class="struktur-hline-bar"></div>
-    </div>
-    <div class="struktur-level">
-      ${card('bendahara','bendahara')}
-      ${card('sekretaris','sekretaris')}
-    </div>
-    <div class="struktur-line"></div>
-    <div class="struktur-hline">
-      <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>
-      <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>
-      <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>
-      <div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>
-      <div class="struktur-hline-bar"></div>
-    </div>
-    <div class="struktur-level">
-      ${card('keamanan','seksi')}
-      ${card('tujuhk','seksi')}
-      ${card('keagamaan','seksi')}
-      ${card('kebersihan','seksi')}
-      ${card('olahraga','seksi')}
-    </div>
-  `;}
+
+  var out = '';
+  out += '<div class="struktur-level">' + card('waliKelas','wali') + '</div>';
+  out += '<div class="struktur-line"></div>';
+  out += '<div class="struktur-level">' + card('ketua','ketua') + '</div>';
+  out += '<div class="struktur-line"></div>';
+  out += '<div class="struktur-level">' + card('wakilKetua','wakil') + '</div>';
+  out += '<div class="struktur-line"></div>';
+  out += '<div class="struktur-hline"><div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div><div class="struktur-hline-bar"></div></div>';
+  out += '<div class="struktur-level">' + card('bendahara','bendahara') + card('sekretaris','sekretaris') + '</div>';
+  out += '<div class="struktur-line"></div>';
+  out += '<div class="struktur-hline">'
+       + '<div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>'
+       + '<div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>'
+       + '<div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>'
+       + '<div class="struktur-hline-bar"></div><div class="struktur-hline-dot"></div>'
+       + '<div class="struktur-hline-bar"></div></div>';
+  out += '<div class="struktur-level">'
+       + card('keamanan','seksi')
+       + card('tujuhk','seksi')
+       + card('keagamaan','seksi')
+       + card('kebersihan','seksi')
+       + card('olahraga','seksi')
+       + '</div>';
+  w.innerHTML = out;
+}
+
 
 function simpanStruktur(key, el) {
   const val = el.innerHTML.replace(/<br\s*\/?>/gi, ', ').replace(/<[^>]+>/g, '').trim();
@@ -1185,19 +1191,21 @@ function simpanStruktur(key, el) {
   renderStruktur();
 }
 
-db.ref('struktur').once('value', snap => {
-  // Selalu mulai dari defaultStruktur sebagai base
+// Render struktur langsung dari default dulu (tidak tunggu Firebase)
+dataStruktur = JSON.parse(JSON.stringify(defaultStruktur));
+renderStruktur();
+
+// Lalu load dari Firebase untuk update nama yang sudah diedit
+db.ref('struktur').once('value', function(snap) {
   dataStruktur = JSON.parse(JSON.stringify(defaultStruktur));
   if (snap.exists()) {
-    const fromDB = snap.val();
-    // Hanya timpa nama jika key ada di defaultStruktur
-    Object.keys(defaultStruktur).forEach(k => {
+    var fromDB = snap.val();
+    Object.keys(defaultStruktur).forEach(function(k) {
       if (fromDB[k] && fromDB[k].nama) dataStruktur[k].nama = fromDB[k].nama;
     });
   }
-  // Simpan ulang ke Firebase agar sinkron dengan key terbaru
-  const toSave = {};
-  Object.keys(defaultStruktur).forEach(k => { toSave[k] = { nama: dataStruktur[k].nama }; });
+  var toSave = {};
+  Object.keys(defaultStruktur).forEach(function(k) { toSave[k] = { nama: dataStruktur[k].nama }; });
   db.ref('struktur').set(toSave);
   renderStruktur();
 });
